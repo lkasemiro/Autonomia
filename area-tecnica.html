@@ -5,38 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Área Técnica | Portal DMA Restrito</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Paleta Corporate Deep Blue - Sutil e Escura */
-            --bg-main: #0a1128;       
-            --bg-card: #101f42;       
-            --bg-input: #1c2d5a;      
-            --border-tech: rgba(255, 255, 255, 0.08);
-            --border-glow: rgba(56, 189, 248, 0.4);
-            
-            --text-title: #f1f5f9;
-            --text-body: #cbd5e1;
-            --text-muted: #94a3b8;
-            
-            --tech-blue: #38bdf8;     
-            --tech-green: #10b981;
-            --tech-red: #f43f5e;
+            /* ── Abismo: continuação do gradiente index → feed → aqui ── */
+            --bg-main:     #04091e;
+            --bg-card:     #071330;
+            --bg-input:    #0d1f4a;
+            --border-tech: rgba(255, 255, 255, 0.07);
+            --border-glow: rgba(56, 182, 255, 0.30);
+
+            --text-title: #e8f4ff;
+            --text-body:  #a8c8e8;
+            --text-muted: #5a80a8;
+
+            --tech-blue:   #38b6ff;
+            --tech-green:  #10b981;
+            --tech-red:    #f43f5e;
             --tech-orange: #f59e0b;
-            
+
             --sidebar-width: 260px;
         }
 
         * {
             margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
         }
 
         body {
-            background-color: var(--bg-main);
+            background: linear-gradient(160deg, #061528 0%, #041020 35%, #03081a 65%, #020510 100%);
+            background-attachment: fixed;
             color: var(--text-body);
             min-height: 100vh;
             display: flex;
             flex-direction: row;
+        }
+
+        /* Bioluminescência sutil no fundo */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(ellipse 300px 120px at 80% 15%, rgba(0,119,182,0.07) 0%, transparent 100%),
+                radial-gradient(ellipse 200px 80px  at 10% 60%, rgba(56,182,255,0.04) 0%, transparent 100%),
+                radial-gradient(ellipse 400px 100px at 50% 92%, rgba(3,4,94,0.12)    0%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
+            animation: biolum 14s ease-in-out infinite alternate;
+        }
+
+        @keyframes biolum {
+            0%   { opacity: 1;   }
+            100% { opacity: 0.5; }
         }
 
         /* Botão Hambúrguer Mobile */
