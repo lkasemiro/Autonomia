@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portal-DMA | Combate ao Aedes</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --primary-blue:  #0b3d91; /* Azul Técnico original */
+            --dark-blue:     #001d3d; /* Azul Escuro original */
+            --abyss-bg:      #0b132b; /* Fundo do Oceano Profundo */
+            --card-dark:     rgba(28, 37, 65, 0.65); /* Vidro Escuro */
+            --accent-green:  #22c55e;
+            --accent-yellow: #facc15;
+            --white:         #ffffff;
+            --text-light:    #f1faee;
+            --text-gray:     #94a3b8;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0;
+            box-sizing: border-box; 
+        }
+
+        body {
+            background: linear-gradient(180deg, #001d3d 0%, var(--abyss-bg) 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            font-family: 'Inter', system-ui, sans-serif;
+            padding-bottom: 90px;
+        }
+
+        /* Topbar Integrada ao Conceito */
+        header {
+            background: rgba(11, 19, 43, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topbar-badge {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 900;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .topbar-title {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        /* Container do App Móvel */
+        .app-container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        /* Card Principal de Boas-Vindas */
+        .tech-welcome-box {
+            background: var(--card-dark);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 25px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .tech-welcome-box h2 {
+            color: var(--accent-blue);
+            font-weight: 900;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .tech-welcome-box p {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        /* Instruções Técnicas */
+        .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .step-number {
+            background: var(--primary-blue);
+            color: var(--white);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(11, 61, 145, 0.3);
+        }
+
+        .step-text {
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            padding-top: 4px;
+        }
+
+        /* Botão de Ação Estilizado */
+        .btn-action-tech {
+            width: 100%;
+            background: var(--accent-yellow);
+            color: var(--dark-blue);
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 6px 20px rgba(250, 204, 21, 0.3);
+            transition: transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-action-tech:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Seção de Certificação / Consulta Online */
+        .cert-section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 25px 20px;
+        }
+
+        .cert-section h3 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--white);
+        }
+
+        .cert-section p {
+            font-size: 0.88rem;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* Formulário de Consulta Glass */
+        .glass-form-box {
+            background: rgba(11, 29, 61, 0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .form-field {
+            margin-bottom: 15px;
+        }
+
+        .form-field label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            color: var(--text-gray);
+        }
+
+        .input-select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1.5px solid rgba(255,255,255,0.1);
+            background: var(--dark-blue);
+            color: var(--white);
+            font-weight: 600;
+            font-size: 0.9rem;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .input-select:focus {
+            outline: none;
+            border-color: var(--accent-green);
+        }
+
+        .row-grid-2 {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 10px;
+        }
+
+        .btn-verify {
+            background: var(--accent-green);
+            color: var(--white);
+            margin-top: 10px;
+            box-shadow: 0 4px 16px rgba(34,197,94,0.2);
+        }
+
+        /* Barra de Navegação de Baixo (Mantendo o PWA consistente) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(11, 19, 43, 0.95);
+            backdrop-filter: blur(15px);
+            height: 65px;
+            border-top: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-gray);
+            font-size: 0.75rem;
+            text-decoration: none;
+            gap: 4px;
+        }
+        .nav-item i { font-size: 1.3rem; }
+        .nav-item.active { color: #38bdf8; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="topbar-brand">
+            <span class="topbar-badge">DMA</span>
+            <strong class="topbar-title">Combate ao <em>Aedes aegypti</em></strong>
+        </div>
+        <a href="./feed.html" style="color: var(--text-light); text-decoration: none; font-size: 0.9rem;">
+            <i class="fa-solid fa-xmark"></i>
+        </a>
+    </header>
+
+    <main class="app-container">
+        
+        <section class="tech-welcome-box">
+            <h2>Bem-vindo, Focal!</h2>
+            <p>Esta é a sua interface técnica de monitoramento. Siga as diretrizes para enviar o relatório de controle semanal de vistoria das dependências da CEDAE.</p>
+            
+            <div class="step-list">
+                <div class="step-item">
+                    <span class="step-number">1</span>
+                    <p class="step-text">Valide seu acesso com seu nome e matrícula institucional.</p>
+                </div>
+                <div class="step-item">
+                    <span class="step-number">2</span>
+                    <p class="step-text">Preencha os indicadores de conformidade de água parada na unidade.</p>
+                </div>
+            </div>
+
+            <button class="btn-action-tech" onclick="alert('Conectando à API do Render para abrir o formulário seguro...')">
+                <i class="fas fa-file-signature"></i> ENVIAR RELATÓRIO SEMANAL
+            </button>
+        </section>
+
+        <section class="cert-section">
+            <h3>Certificação de Unidade</h3>
+            <p>Consulte o status em tempo real da sua regional para emissão do selo de Unidade Protegida no ano de 2026.</p>
+            
+            <div class="glass-form-box">
+                <div class="form-field">
+                    <label><i class="fas fa-building"></i> Unidade Operacional</label>
+                    <select class="input-select">
+                        <option>ETA Laranjal - Sistema Imunana</option>
+                        <option>Sede Central - Centro Rio</option>
+                        <option>Sistemas Isolados - Rio Cabenga</option>
+                    </select>
+                </div>
+
+                <div class="row-grid-2">
+                    <div class="form-field">
+                        <label><i class="fas fa-calendar-alt"></i> Mês de Referência</label>
+                        <select class="input-select">
+                            <option value="5" selected>Maio</option>
+                            <option value="6">Junho</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label><i class="fas fa-calendar-check"></i> Ano</label>
+                        <select class="input-select">
+                            <option>2026</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn-action-tech btn-verify" onclick="alert('Buscando dados no PostgreSQL via Neon...')">
+                    <i class="fas fa-search"></i> VERIFICAR STATUS
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="./index.html" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            Início
+        </a>
+        <a href="./feed.html" class="nav-item">
+            <i class="fa-solid fa-compass"></i>
+            Explorar
+        </a>
+        <a href="#" class="nav-item active" style="color: var(--accent-yellow);">
+            <i class="fa-solid fa-mosquito"></i>
+            Aedes
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fa-solid fa-chart-line"></i>
+            Dados
+        </a>
+    </nav>
+
+</body>
+</html>
