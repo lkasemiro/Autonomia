@@ -3,167 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal-DMA | Painel de Comunicações</title>
+    <title>Portal-DMA | Explorar</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --surface: #0077b6; 
-            --twilight: #0096c7; 
-            --ocean-deep: #03045e; 
-            --dark-bg: #0b132b; 
-            --mail-bg: rgba(20, 30, 55, 0.75); /* Fundo estilo linha de email */
-            --text-light: #f1faee;
-            --text-gray: #94a3b8;
-            --accent-green: #4ade80;
-            --accent-blue: #38bdf8;
-            --accent-yellow: #facc15;
-            --border-color: rgba(255, 255, 255, 0.08);
+            /* Paleta Solar, Iluminada e Convidativa (Pública) */
+            --bg-gradient: linear-gradient(135deg, #f7fee7 0%, #f0fdf4 50%, #ecfeff 100%);
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            
+            /* Cores de Destaque dos Módulos */
+            --accent-aedes: #eab308;
+            --accent-recicla: #16a34a;
+            --accent-geo: #0284c7;
+            
+            --shadow-light: 0 10px 25px rgba(15, 23, 42, 0.04);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: linear-gradient(180deg, #005f73 0%, var(--dark-bg) 100%);
-            color: var(--text-light);
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
             min-height: 100vh;
-            padding-bottom: 80px; 
+            padding-bottom: 90px;
         }
 
-        /* Header estilo Outlook/Webmail Corporativo */
+        /* Topbar Limpa e Fluida */
         header {
-            background: rgba(11, 19, 43, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 16px 20px;
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            border-bottom: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.01);
         }
 
         .logo-feed {
             font-weight: 700;
             font-size: 1.1rem;
-            color: var(--text-light);
+            color: var(--text-main);
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
         .logo-feed i {
-            color: var(--accent-blue);
+            color: var(--accent-geo);
         }
 
         .logo-feed span {
-            color: var(--accent-blue);
-            font-weight: 700;
-            background: rgba(56, 189, 248, 0.1);
-            padding: 2px 8px;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.85rem;
+            background: rgba(0,0,0,0.05);
+            padding: 2px 6px;
             border-radius: 4px;
-            font-size: 0.8rem;
         }
 
-        /* Container Principal */
+        /* Container do Feed */
         .feed-container {
             max-width: 550px;
             width: 100%;
-            margin: 15px auto;
-            padding: 0 12px;
+            margin: 20px auto;
+            padding: 0 16px;
         }
 
-        /* Abas de Filtros Rápidos (Estilo Pastas de Email) */
+        /* Filtros por Categoria (Abas Fixas que filtram a atividade na página) */
         .filters-container {
             display: flex;
             gap: 8px;
             overflow-x: auto;
             padding-bottom: 12px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
         }
-        .filters-container::-webkit-scrollbar {
-            display: none;
-        }
+        .filters-container::-webkit-scrollbar { display: none; }
 
         .filter-bubble {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 0.8rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 500;
             white-space: nowrap;
             cursor: pointer;
-            color: var(--text-gray);
+            color: var(--text-muted);
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.2s;
+            box-shadow: var(--shadow-light);
+            transition: all 0.2s ease;
         }
         .filter-bubble.active {
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--accent-blue);
-            border-color: var(--accent-blue);
-            font-weight: 600;
+            background: #ffffff;
+            color: var(--text-main);
+            border-color: var(--text-main);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        /* Card Formato Email Aberto */
+        /* Card de Postagem Estilo Comunicação Integrada */
         .email-card {
-            background: var(--mail-bg);
-            backdrop-filter: blur(8px);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 16px;
-            padding: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: var(--shadow-light);
+            transition: transform 0.2s;
         }
 
-        /* Cabeçalho do Email */
         .email-header {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            padding-bottom: 12px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .email-subject-line {
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 8px;
+            gap: 12px;
+            margin-bottom: 6px;
         }
 
         .email-subject {
             font-size: 1.05rem;
             font-weight: 700;
-            color: var(--text-light);
-            line-height: 1.3;
+            color: var(--text-main);
+            line-height: 1.4;
         }
 
+        /* Tags de Categoria Clean */
         .email-tag {
-            font-size: 0.65rem;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
             text-transform: uppercase;
             flex-shrink: 0;
+            letter-spacing: 0.02em;
         }
-        .tag-aedes { background: rgba(250, 204, 21, 0.15); color: var(--accent-yellow); border: 1px solid rgba(250, 204, 21, 0.3); }
-        .tag-recicla { background: rgba(74, 222, 128, 0.15); color: var(--accent-green); border: 1px solid rgba(74, 222, 128, 0.3); }
-        .tag-geo { background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); border: 1px solid rgba(56, 189, 248, 0.3); }
+        .tag-aedes { background: #fef9c3; color: #713f12; border: 1px solid #fef08a; }
+        .tag-recicla { background: #dcfce7; color: #14532d; border: 1px solid #bbf7d0; }
+        .tag-geo { background: #e0f2fe; color: #0c4a6e; border: 1px solid #bae6fd; }
 
         .email-meta-line {
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 0.8rem;
-            color: var(--text-gray);
+            color: var(--text-muted);
         }
 
         .email-sender {
@@ -171,218 +177,230 @@
             align-items: center;
             gap: 6px;
         }
-        .email-sender strong {
-            color: #cbd5e1;
-        }
 
-        /* Corpo do Conteúdo */
+        /* Conteúdo Escrito */
         .email-body {
             font-size: 0.9rem;
-            line-height: 1.5;
-            color: #e2e8f0;
-            margin-bottom: 15px;
-            text-align: justify;
+            line-height: 1.6;
+            color: #334155;
+            margin-bottom: 16px;
         }
 
-        /* Área de Imagem/Anexo Incorporada do Aedes */
-        .email-image-attachment {
-            width: 100%;
+        /* Botão de Convite / Inclusão / Ação para o Usuário Público */
+        .action-banner-box {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px dashed rgba(0,0,0,0.1);
+            border-radius: 10px;
+            padding: 14px;
+            margin-top: 10px;
+        }
+        
+        .btn-invite-action {
+            background: #ffffff;
+            color: var(--text-main);
+            border: 1px solid rgba(0,0,0,0.1);
+            padding: 10px 16px;
             border-radius: 8px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
-            overflow: hidden;
-            background: #001d3d;
-            display: flex;
-            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-flex;
             align-items: center;
-            padding: 15px 0;
+            gap: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            transition: all 0.2s ease;
+        }
+        .btn-invite-action:hover {
+            background: var(--text-main);
+            color: #ffffff;
         }
 
-        .email-image-attachment img {
-            max-width: 75px;
-            height: auto;
-            object-fit: contain;
-            display: block;
-        }
-
-        /* Bloco Genérico de Arquivo (Planilhas/Shapefiles) */
+        /* Anexo de Arquivo */
         .email-file-attachment {
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 6px;
-            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            padding: 10px 14px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.8rem;
-            color: #cbd5e1;
+            gap: 12px;
+            font-size: 0.82rem;
+            color: var(--text-main);
         }
-        .email-file-attachment i {
-            font-size: 1.2rem;
-        }
+        .email-file-attachment i { font-size: 1.3rem; }
 
-        /* Rodapé de Ações Estilo Resposta de Email */
+        /* Rodapé Social Inofensivo */
         .email-footer-actions {
             display: flex;
             justify-content: flex-end;
             gap: 16px;
-            font-size: 0.85rem;
-            color: var(--text-gray);
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
-            padding-top: 10px;
-            margin-top: 12px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(0, 0, 0, 0.04);
+            padding-top: 12px;
+            margin-top: 16px;
         }
         .email-footer-actions span {
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
-        }
-        .email-footer-actions span:hover {
-            color: var(--accent-blue);
+            gap: 6px;
         }
 
-        /* Bottom Nav padrão PWA */
+        /* Bottom Nav Fixa e Translúcida */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(11, 19, 43, 0.95);
-            backdrop-filter: blur(15px);
-            height: 65px;
-            border-top: 1px solid rgba(56, 189, 248, 0.2);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            height: 68px;
+            border-top: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-around;
             align-items: center;
             z-index: 100;
+            box-shadow: 0 -4px 30px rgba(15, 23, 42, 0.02);
         }
 
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: var(--text-gray);
+            color: var(--text-muted);
             font-size: 0.75rem;
             text-decoration: none;
+            font-weight: 500;
             gap: 4px;
         }
-        .nav-item i { font-size: 1.3rem; }
-        .nav-item.active { color: var(--accent-blue); }
+        .nav-item i { font-size: 1.25rem; }
+        .nav-item.active { color: var(--accent-geo); font-weight: 600; }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo-feed">
-            <i class="fa-solid fa-inbox"></i> Communications <span>INBOX</span>
+            <i class="fa-solid fa-compass"></i> Explorar <span>DMA</span>
         </div>
-        <i class="fa-solid fa-sliders" style="font-size: 1.1rem; cursor: pointer; color: var(--text-gray);"></i>
+        <i class="fa-solid fa-sliders" style="font-size: 1.1rem; cursor: pointer; color: var(--text-muted);"></i>
     </header>
 
     <main class="feed-container">
         
         <div class="filters-container">
-            <div class="filter-bubble active"><i class="fa-solid fa-envelope-open-text"></i> Todas</div>
-            <a href="./aedes.html" style="text-decoration: none; color: inherit;">
-                <div class="filter-bubble"><i class="fa-solid fa-mosquito"></i> Módulo Aedes</div>
-            </a>
-            <div class="filter-bubble"><i class="fa-solid fa-recycle"></i> Recicla</div>
-            <div class="filter-bubble"><i class="fa-solid fa-map"></i> Geoprocessamento</div>
+            <div class="filter-bubble active" onclick="filterFeed('all')"><i class="fa-solid fa-envelope-open-text"></i> Todas</div>
+            <div class="filter-bubble" onclick="filterFeed('aedes')"><i class="fa-solid fa-mosquito"></i> Módulo Aedes</div>
+            <div class="filter-bubble" onclick="filterFeed('recicla')"><i class="fa-solid fa-recycle"></i> Recicla</div>
+            <div class="filter-bubble" onclick="filterFeed('geo')"><i class="fa-solid fa-map"></i> Geoprocessamento</div>
         </div>
 
-        <div class="email-card">
-            <div class="email-header">
-                <div class="email-subject-line">
-                    <h2 class="email-subject">[ALERTA] Cronograma de Vistoria Semanal - Focais de Combate</h2>
-                    <span class="email-tag tag-aedes">Aedes</span>
-                </div>
-                <div class="email-meta-line">
-                    <div class="email-sender">
-                        <i class="fa-solid fa-shield-halved" style="color: var(--accent-yellow);"></i>
-                        De: <strong>Núcleo Técnico DMA</strong>
+        <div class="feed-group" data-category="aedes">
+            <div class="email-card">
+                <div class="email-header">
+                    <div class="email-subject-line">
+                        <h2 class="email-subject">Programa de Rotina Ambiental: Emissão de Certificados e Alerta de Condicionantes</h2>
+                        <span class="email-tag tag-aedes">Aedes</span>
                     </div>
-                    <div class="email-time">Há 5h</div>
-                </div>
-            </div>
-            
-            <div class="email-body">
-                Atenção focais! Diante do alerta de chuvas intensas mapeadas para o final de semana nas subestações operacionais, solicitamos reforço imediato na grade de vistorias em calhas e pátios abertos. Utilizem os inputs do módulo para validação em tempo real.
-            </div>
-
-            <div class="email-image-attachment">
-                <img src="./assets/icon.png" alt="Ícone de Alerta Aedes" onerror="this.style.display='none';">
-            </div>
-
-            <div class="email-footer-actions">
-                <span><i class="fa-solid fa-reply"></i> Responder</span>
-                <span><i class="fa-solid fa-star"></i> Priorizar</span>
-            </div>
-        </div>
-
-        <div class="email-card">
-            <div class="email-header">
-                <div class="email-subject-line">
-                    <h2 class="email-subject">Atualização de Camadas Espaciais: Canal Imunana (2026)</h2>
-                    <span class="email-tag tag-geo">Geo</span>
-                </div>
-                <div class="email-meta-line">
-                    <div class="email-sender">
-                        <i class="fa-solid fa-circle-user"></i>
-                        De: <strong>Eng. de Agrimensura (Luisa)</strong>
+                    <div class="email-meta-line">
+                        <div class="email-sender">
+                            <i class="fa-solid fa-circle-info" style="color: var(--accent-aedes);"></i>
+                            De: <strong>Núcleo Técnico DMA</strong>
+                        </div>
+                        <div class="email-time">Há 5h</div>
                     </div>
-                    <div class="email-time">Há 2h</div>
                 </div>
-            </div>
-            
-            <div class="email-body">
-                Concluímos o processamento da análise espacial temporal do Canal Imunana. Atualizamos as curvas de nível de altimetria e o vetor de uso do solo para o relatório consolidado do trimestre. O projeto do QGIS foi disponibilizado para consulta.
-            </div>
-
-            <div class="email-file-attachment">
-                <i class="fa-solid fa-file-archived" style="color: var(--accent-blue);"></i>
-                <div>
-                    <div>mapa_imunana_2026.qgs</div>
-                    <div style="font-size: 0.7rem; color: var(--text-gray);">Shapefile / Vetores zipados</div>
+                
+                <div class="email-body">
+                    Atenção gerências e equipes locais: Lembramos que as unidades operacionais da CEDAE que possuem <strong>Licença de Operação (LO)</strong>, ou estão em processo de obtenção, possuem condicionantes que exigem a eliminação de ambientes propícios à proliferação de vetores, principalmente do mosquito <em>Aedes aegypti</em>.
+                    <br><br>
+                    Para garantir conformidade, a plataforma emite <strong>Certificados Mensais de Inspeção</strong> que comprovam as varreduras semanais realizadas. Se sua unidade ainda não faz parte do mapa ativo, convidamos os focais indicados a realizarem o credenciamento técnico.
+                    
+                    <div class="action-banner-box">
+                        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px;">Sua equipe possui um focal designado? Realize a identificação ou abra o formulário técnico para prestar as vistorias:</p>
+                        <a href="./aedes.html" class="btn-invite-action">
+                            <i class="fa-solid fa-user-plus"></i> Ir para Área de Vistorias / Cadastrar Focal
+                        </a>
+                    </div>
                 </div>
-            </div>
 
-            <div class="email-footer-actions">
-                <span><i class="fa-solid fa-reply"></i> Responder</span>
-                <span><i class="fa-solid fa-star"></i> Priorizar</span>
+                <div class="email-footer-actions">
+                    <span><i class="fa-solid fa-share-nodes"></i> Compartilhar</span>
+                    <span><i class="fa-solid fa-star"></i> Destacar</span>
+                </div>
             </div>
         </div>
 
-        <div class="email-card">
-            <div class="email-header">
-                <div class="email-subject-line">
-                    <h2 class="email-subject">Relatório Mensal de Pesagem e Indicadores ESG - Tinguá</h2>
-                    <span class="email-tag tag-recicla">Recicla</span>
-                </div>
-                <div class="email-meta-line">
-                    <div class="email-sender">
-                        <i class="fa-solid fa-leaf" style="color: var(--accent-green);"></i>
-                        De: <strong>Educação Ambiental</strong>
+        <div class="feed-group" data-category="recicla">
+            <div class="email-card">
+                <div class="email-header">
+                    <div class="email-subject-line">
+                        <h2 class="email-subject">Relatório Mensal de Pesagem e Indicadores ESG - Tinguá</h2>
+                        <span class="email-tag tag-recicla">Recicla</span>
                     </div>
-                    <div class="email-time">Ontem</div>
+                    <div class="email-meta-line">
+                        <div class="email-sender">
+                            <i class="fa-solid fa-leaf" style="color: var(--accent-recicla);"></i>
+                            De: <strong>Educação Ambiental</strong>
+                        </div>
+                        <div class="email-time">Ontem</div>
+                    </div>
+                </div>
+                
+                <div class="email-body">
+                    Compartilhamos com toda a comunidade interna os dados consolidados do projeto CEDAE Recicla executado na Reserva Biológica do Tinguá. Batemos as metas institucionais de destinação adequada de resíduos sólidos recicláveis da unidade corporativa este mês, fortalecendo nossa agenda sustentável.
+                </div>
+
+                <div class="email-file-attachment">
+                    <i class="fa-regular fa-file-excel" style="color: var(--accent-recicla);"></i>
+                    <div>
+                        <strong>indicadores_tingua_recicla.xlsx</strong>
+                        <div style="font-size: 0.72rem; color: var(--text-muted);">Planilha pública de dados gerais ESG</div>
+                    </div>
+                </div>
+
+                <div class="email-footer-actions">
+                    <span><i class="fa-solid fa-share-nodes"></i> Compartilhar</span>
+                    <span><i class="fa-solid fa-star"></i> Destacar</span>
                 </div>
             </div>
-            
-            <div class="email-body">
-                Compartilhamos os dados consolidados do projeto CEDAE Recicla executado na Reserva Biológica do Tinguá. Batemos as metas de destinação adequada de resíduos sólidos recicláveis da unidade corporativa este mês.
-            </div>
+        </div>
 
-            <div class="email-file-attachment">
-                <i class="fa-regular fa-file-excel" style="color: var(--accent-green);"></i>
-                <div>
-                    <div>indicadores_tingua_recicla.xlsx</div>
-                    <div style="font-size: 0.7rem; color: var(--text-gray);">Planilha de Dados Gerais</div>
+        <div class="feed-group" data-category="geo">
+            <div class="email-card">
+                <div class="email-header">
+                    <div class="email-subject-line">
+                        <h2 class="email-subject">Atualização de Camadas Espaciais: Canal Imunana (2026)</h2>
+                        <span class="email-tag tag-geo">Geo</span>
+                    </div>
+                    <div class="email-meta-line">
+                        <div class="email-sender">
+                            <i class="fa-solid fa-earth-americas" style="color: var(--accent-geo);"></i>
+                            De: <strong>Eng. de Agrimensura (Luisa)</strong>
+                        </div>
+                        <div class="email-time">Há 2d</div>
+                    </div>
                 </div>
-            </div>
+                
+                <div class="email-body">
+                    Concluímos com sucesso o mapeamento e o processamento da análise espacial temporal do Canal Imunana. Atualizamos as curvas de nível de altimetria e o vetor de uso do solo para o relatório consolidado do trimestre. O arquivo georreferenciado está disponível para consulta das equipes de planejamento.
+                </div>
 
-            <div class="email-footer-actions">
-                <span><i class="fa-solid fa-reply"></i> Responder</span>
-                <span><i class="fa-solid fa-star"></i> Priorizar</span>
+                <div class="email-file-attachment">
+                    <i class="fa-solid fa-file-archived" style="color: var(--accent-geo);"></i>
+                    <div>
+                        <strong>mapa_imunana_2026.qgs</strong>
+                        <div style="font-size: 0.72rem; color: var(--text-muted);">Projeto QGIS / Vetores compactados</div>
+                    </div>
+                </div>
+
+                <div class="email-footer-actions">
+                    <span><i class="fa-solid fa-share-nodes"></i> Compartilhar</span>
+                    <span><i class="fa-solid fa-star"></i> Destacar</span>
+                </div>
             </div>
         </div>
 
@@ -397,19 +415,33 @@
             <i class="fa-solid fa-compass"></i>
             Explorar
         </a>
-        <a href="#" class="nav-item style-plus" onclick="alert('Funcionalidade interna restrita: Autentique seu acesso técnico para emitir novos despachos.')">
-            <i class="fa-solid fa-paper-plane" style="font-size: 1.2rem; color: var(--accent-blue);"></i>
-            <span style="font-size: 0.75rem; margin-top: 4px;">Enviar</span>
-        </a>
         <a href="./aedes.html" class="nav-item">
             <i class="fa-solid fa-mosquito"></i>
             Aedes
         </a>
-        <a href="#" class="nav-item">
+        <a href="./aedes-publico.html" class="nav-item">
             <i class="fa-solid fa-chart-line"></i>
             Dados
         </a>
     </nav>
 
+    <script>
+        function filterFeed(category) {
+            // Atualiza classe ativa nos bubbles
+            const bubbles = document.querySelectorAll('.filter-bubble');
+            bubbles.forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            // Filtra os blocos mantendo a ordem do arquivo intacta
+            const groups = document.querySelectorAll('.feed-group');
+            groups.forEach(g => {
+                if (category === 'all' || g.getAttribute('data-category') === category) {
+                    g.style.display = 'block';
+                } else {
+                    g.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
