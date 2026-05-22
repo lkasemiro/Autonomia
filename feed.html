@@ -4,366 +4,736 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal-DMA | Explorar</title>
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#0077b6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
     <style>
+        /* ── VARIÁVEIS ───────────────────────────────────── */
         :root {
-            --bg-gradient: linear-gradient(135deg, #f7fee7 0%, #f0fdf4 50%, #ecfeff 100%);
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.6);
-            --text-main: #0f172a;
-            --text-muted: #475569;
-            
-            --accent-aedes: #eab308;
+            --primary:   #0077b6;
+            --secondary: #2a9d8f;
+            --abyss:     #03045e;
+            --dark:      #0d3b5e;
+            --gray:      #4a6a80;
+
+            --accent-aedes:   #eab308;
             --accent-recicla: #16a34a;
-            --accent-geo: #0284c7;
-            
-            --shadow-light: 0 10px 25px rgba(15, 23, 42, 0.04);
+            --accent-geo:     #0284c7;
+
+            --glass-bg:     rgba(255, 255, 255, 0.70);
+            --glass-border: rgba(255, 255, 255, 0.82);
+            --shadow:       0 4px 24px rgba(0, 100, 180, 0.08);
+
+            --sidebar-width: 220px;
         }
 
         * {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text-main);
+            font-family: 'DM Sans', 'Segoe UI', sans-serif;
+            color: var(--dark);
             min-height: 100vh;
-            padding-bottom: 90px;
+            padding-bottom: 80px;
+
+            /* Continua a descida do index: azul de superfície → intermediário */
+            background: linear-gradient(
+                180deg,
+                #cceeff  0%,
+                #b8e4ff 20%,
+                #90cdf4 50%,
+                #60b0e8 80%,
+                #3a8fd1 100%
+            );
+            background-attachment: fixed;
         }
 
+        /* ── LUZ CÁUSTICA ──────────────────────────────── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(ellipse 90px 24px at 15% 8%,  rgba(255,255,255,0.18) 0%, transparent 100%),
+                radial-gradient(ellipse 60px 18px at 72% 5%,  rgba(255,255,255,0.14) 0%, transparent 100%),
+                radial-gradient(ellipse 110px 30px at 88% 22%, rgba(255,255,255,0.10) 0%, transparent 100%),
+                radial-gradient(ellipse 70px 22px at 42% 38%, rgba(255,255,255,0.08) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
+            animation: caustics 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes caustics {
+            0%   { transform: translateX(0)   scaleY(1);    }
+            100% { transform: translateX(12px) scaleY(1.04); }
+        }
+
+        /* ── HEADER ─────────────────────────────────────── */
         header {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 16px 20px;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 300;
+            background: rgba(255, 255, 255, 0.62);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
+            padding: 13px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo-feed {
-            font-weight: 700;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
             font-size: 1.1rem;
-            color: var(--text-main);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            letter-spacing: -0.02em;
+            text-decoration: none;
+        }
+
+        .logo-feed .logo-dot { color: var(--secondary); }
+
+        .header-right {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .logo-feed i { color: var(--accent-geo); }
-
-        .logo-feed span {
-            color: var(--text-muted);
-            font-weight: 500;
-            font-size: 0.85rem;
-            background: rgba(0,0,0,0.05);
-            padding: 2px 6px;
-            border-radius: 4px;
+        /* Botão hamburguer (só aparece no mobile) */
+        .sidebar-toggle {
+            display: none;
+            background: rgba(255,255,255,0.75);
+            border: 1px solid rgba(255,255,255,0.9);
+            border-radius: 10px;
+            width: 36px; height: 36px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--primary);
+            font-size: 15px;
         }
 
-        .feed-container {
-            max-width: 750px;
-            width: 100%;
-            margin: 20px auto;
-            padding: 0 16px;
+        /* ── OVERLAY do DRAWER ──────────────────────────── */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(3, 4, 94, 0.35);
+            backdrop-filter: blur(2px);
+            z-index: 400;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .filters-container {
+        .sidebar-overlay.open {
+            opacity: 1;
+        }
+
+        /* ── LAYOUT ─────────────────────────────────────── */
+        .page-layout {
+            position: relative;
+            z-index: 1;
             display: flex;
-            gap: 8px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 20px 16px 0;
+            gap: 18px;
+            align-items: flex-start;
+        }
+
+        /* ── SIDEBAR ─────────────────────────────────────── */
+        .sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: sticky;
+            top: 74px; /* altura do header */
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+
+        /* Scrollbar discreta na sidebar */
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(0,100,180,0.2); border-radius: 3px; }
+
+        .sidebar-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 16px 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .sidebar-section-label {
+            font-size: 0.67rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: rgba(0, 60, 120, 0.4);
+            padding: 0 8px 8px;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: rgba(0, 80, 140, 0.08);
+            margin: 6px 0;
+        }
+
+        .sidebar-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            font-size: 0.83rem;
+            font-weight: 400;
+            color: var(--dark);
+            cursor: pointer;
+            transition: background 0.15s;
+            text-decoration: none;
+        }
+
+        .sidebar-nav-item i {
+            font-size: 13px;
+            width: 18px;
+            text-align: center;
+            color: var(--gray);
+        }
+
+        .sidebar-nav-item:hover {
+            background: rgba(0, 119, 182, 0.07);
+        }
+
+        .sidebar-nav-item.active {
+            background: rgba(0, 119, 182, 0.12);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .sidebar-nav-item.active i { color: var(--primary); }
+
+        .sidebar-badge {
+            margin-left: auto;
+            background: rgba(0,119,182,0.12);
+            color: var(--primary);
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 100px;
+        }
+
+        /* Card de acesso restrito na sidebar */
+        .sidebar-abyss-card {
+            background: rgba(3, 4, 94, 0.08);
+            border: 1px solid rgba(3, 4, 94, 0.12);
+        }
+
+        /* ── FEED PRINCIPAL ──────────────────────────────── */
+        .feed-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* Filtros */
+        .filters-bar {
+            display: flex;
+            gap: 7px;
             overflow-x: auto;
             padding-bottom: 12px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            margin-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.4);
         }
-        .filters-container::-webkit-scrollbar { display: none; }
 
-        .filter-bubble {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 0.82rem;
+        .filters-bar::-webkit-scrollbar { display: none; }
+
+        .filter-pill {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.75);
+            backdrop-filter: blur(8px);
+            padding: 7px 13px;
+            border-radius: 100px;
+            font-size: 0.8rem;
             font-weight: 500;
             white-space: nowrap;
             cursor: pointer;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: var(--shadow-light);
-        }
-        .filter-bubble.active {
-            background: #ffffff;
-            color: var(--text-main);
-            border-color: var(--text-main);
+            color: var(--gray);
+            transition: all 0.18s;
         }
 
-        .email-card {
+        .filter-pill.active {
+            background: rgba(255,255,255,0.9);
+            color: var(--primary);
+            border-color: rgba(0,119,182,0.3);
+            font-weight: 600;
+        }
+
+        /* ── CARDS DE PUBLICAÇÃO ─────────────────────────── */
+        .pub-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 16px;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             border: 1px solid var(--glass-border);
-            margin-bottom: 20px;
-            padding: 20px;
-            box-shadow: var(--shadow-light);
-        }
-
-        .split-layout {
-            display: table;
-            width: 100%;
-            table-layout: fixed;
-        }
-
-        .split-col-image {
-            display: table-cell;
-            width: 45%;
-            vertical-align: top;
-            padding-right: 20px;
-        }
-
-        .split-col-text {
-            display: table-cell;
-            width: 55%;
-            vertical-align: top;
-        }
-
-        .infographic-box {
-            width: 100%;
-            border-radius: 12px;
+            border-radius: 18px;
+            margin-bottom: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            background: #ffffff;
-            border: 1px solid rgba(0,0,0,0.03);
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .infographic-box img {
+        .pub-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0,100,180,0.13);
+        }
+
+        /* Layout com imagem lateral (desktop) */
+        .pub-card-split {
+            display: flex;
+            gap: 0;
+        }
+
+        .pub-card-split .pub-image-col {
+            width: 38%;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .pub-card-split .pub-image-col img,
+        .pub-card-split .pub-image-col .pub-img-placeholder {
             width: 100%;
-            height: auto;
+            height: 100%;
+            min-height: 180px;
+            object-fit: cover;
             display: block;
         }
 
-        .email-header { margin-bottom: 12px; }
-
-        .email-subject-line {
+        .pub-card-split .pub-content-col {
+            flex: 1;
+            padding: 18px 16px;
             display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 6px;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .email-subject {
-            font-size: 1.05rem;
+        /* Card simples (sem imagem lateral) */
+        .pub-card-simple {
+            padding: 18px 18px 0;
+        }
+
+        /* Tag */
+        .pub-tag {
+            display: inline-block;
+            font-size: 0.67rem;
+            padding: 3px 10px;
+            border-radius: 100px;
             font-weight: 700;
-            color: var(--text-main);
-            line-height: 1.4;
-        }
-
-        .email-tag {
-            font-size: 0.7rem;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: 600;
             text-transform: uppercase;
-            flex-shrink: 0;
+            letter-spacing: 0.06em;
         }
-        .tag-aedes { background: #fef9c3; color: #713f12; border: 1px solid #fef08a; }
+
+        .tag-aedes   { background: #fef9c3; color: #713f12; border: 1px solid #fde68a; }
         .tag-recicla { background: #dcfce7; color: #14532d; border: 1px solid #bbf7d0; }
-        .tag-geo { background: #e0f2fe; color: #0c4a6e; border: 1px solid #bae6fd; }
+        .tag-geo     { background: #e0f2fe; color: #0c4a6e; border: 1px solid #bae6fd; }
 
-        .email-meta-line {
+        /* Título */
+        .pub-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1.35;
+        }
+
+        /* Corpo */
+        .pub-body {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--gray);
+            font-weight: 300;
+        }
+
+        /* Placeholder de imagem */
+        .pub-img-placeholder {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            justify-content: center;
+            font-size: 2.5rem;
         }
 
-        .email-body {
-            font-size: 0.88rem;
-            line-height: 1.55;
-            color: #334155;
-            margin-bottom: 14px;
+        .pub-img-aedes   { background: linear-gradient(135deg, #fef9c3, #fde68a); }
+        .pub-img-recicla { background: linear-gradient(135deg, #dcfce7, #bbf7d0); }
+        .pub-img-geo     { background: linear-gradient(135deg, #e0f2fe, #bae6fd); }
+
+        /* Imagem com largura total (acima do conteúdo) */
+        .pub-img-full {
+            width: 100%;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
         }
 
-        .action-banner-box {
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px dashed rgba(0,0,0,0.1);
-            border-radius: 10px;
-            padding: 12px;
-            margin-top: 10px;
+        /* Rodapé do card */
+        .pub-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 18px 14px;
+            border-top: 1px solid rgba(0,0,0,0.04);
         }
-        
-        .btn-invite-action {
-            background: #ffffff;
-            color: var(--text-main);
-            border: 1px solid rgba(0,0,0,0.12);
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.82rem;
-            text-decoration: none;
+
+        .pub-meta {
+            font-size: 0.75rem;
+            color: rgba(0,60,120,0.4);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .pub-action {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            gap: 6px;
+            background: rgba(0,119,182,0.1);
+            color: var(--primary);
+            border: 1px solid rgba(0,119,182,0.2);
+            padding: 7px 14px;
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.18s;
         }
 
-        .email-file-attachment {
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 8px;
-            padding: 10px 14px;
+        .pub-action:hover {
+            background: rgba(0,119,182,0.18);
+        }
+
+        /* Anexo */
+        .pub-attachment {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 0.82rem;
-            margin-top: 10px;
+            gap: 10px;
+            background: rgba(255,255,255,0.55);
+            border: 1px solid rgba(22,163,74,0.15);
+            border-radius: 10px;
+            padding: 9px 13px;
+            font-size: 0.8rem;
+            color: var(--dark);
+            margin: 0 18px 14px;
         }
 
-        .email-footer-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 16px;
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            border-top: 1px solid rgba(0, 0, 0, 0.04);
-            padding-top: 12px;
-            margin-top: 14px;
-        }
-
-        /* Bottom Nav Simplificada (Início, Explorar, Login) */
+        /* ── BOTTOM NAV ──────────────────────────────────── */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.7);
+            bottom: 0; left: 0; right: 0;
+            z-index: 300;
+            background: rgba(255, 255, 255, 0.72);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            height: 68px;
             border-top: 1px solid var(--glass-border);
+            height: 66px;
             display: flex;
             justify-content: space-around;
             align-items: center;
-            z-index: 100;
         }
 
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            text-decoration: none;
+            gap: 3px;
+            color: var(--gray);
+            font-size: 0.72rem;
             font-weight: 500;
-            gap: 4px;
-            width: 33.33%;
+            text-decoration: none;
+            flex: 1;
         }
-        .nav-item i { font-size: 1.25rem; }
-        .nav-item.active { color: var(--accent-geo); font-weight: 600; }
 
+        .nav-item i { font-size: 1.2rem; }
+        .nav-item.active { color: var(--primary); font-weight: 700; }
+
+        /* ── RESPONSIVO: MOBILE ──────────────────────────── */
         @media (max-width: 680px) {
-            .split-layout, .split-col-image, .split-col-text { display: block; width: 100%; padding-right: 0; }
-            .split-col-image { margin-bottom: 16px; }
+
+            /* Mostra o toggle */
+            .sidebar-toggle { display: flex; }
+
+            /* Sidebar vira drawer */
+            .sidebar {
+                position: fixed;
+                top: 0; left: 0; bottom: 0;
+                z-index: 500;
+                width: 78%;
+                max-width: 300px;
+                max-height: 100vh;
+                background: rgba(240, 249, 255, 0.97);
+                backdrop-filter: blur(24px);
+                -webkit-backdrop-filter: blur(24px);
+                border-right: 1px solid var(--glass-border);
+                border-radius: 0 24px 24px 0;
+                padding: 20px 12px;
+                transform: translateX(-100%);
+                transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+                box-shadow: 4px 0 40px rgba(3,4,94,0.18);
+                overflow-y: auto;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay { display: block; }
+
+            /* Feed ocupa tudo */
+            .page-layout {
+                padding: 14px 12px 0;
+            }
+
+            /* Cards sem split no mobile */
+            .pub-card-split {
+                flex-direction: column;
+            }
+
+            .pub-card-split .pub-image-col {
+                width: 100%;
+            }
+
+            .pub-card-split .pub-image-col .pub-img-placeholder {
+                min-height: 120px;
+            }
+        }
+
+        @media (min-width: 681px) {
+            /* Overlay escondido no desktop */
+            .sidebar-overlay { display: none !important; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Overlay do drawer mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
     <header>
-        <div class="logo-feed">
-            <i class="fa-solid fa-compass"></i> Explorar <span>DMA</span>
+        <a href="./index.html" class="logo-feed">
+            <i class="fa-solid fa-droplet" aria-hidden="true"></i>
+            Portal<span class="logo-dot">DMA</span>
+        </a>
+        <div class="header-right">
+            <!-- Só aparece no mobile -->
+            <button class="sidebar-toggle" onclick="openSidebar()" aria-label="Abrir seções">
+                <i class="fa-solid fa-bars-staggered"></i>
+            </button>
         </div>
     </header>
 
-    <main class="feed-container">
-        
-        <div class="filters-container">
-            <div class="filter-bubble active" onclick="filterFeed('all')"><i class="fa-solid fa-envelope-open-text"></i> Todas</div>
-            <div class="filter-bubble" onclick="filterFeed('aedes')"><i class="fa-solid fa-mosquito"></i> Módulo Aedes</div>
-            <div class="filter-bubble" onclick="filterFeed('recicla')"><i class="fa-solid fa-recycle"></i> Recicla</div>
-            <div class="filter-bubble" onclick="filterFeed('geo')"><i class="fa-solid fa-map"></i> Geoprocessamento</div>
-        </div>
+    <div class="page-layout">
 
-        <div class="feed-group" data-category="aedes">
-            <div class="email-card">
-                <div class="split-layout">
-                    <div class="split-col-image">
-                        <div class="infographic-box">
-                            <img src="./assets/dengue_icon2.png" alt="Programa de Combate à Dengue">
+        <!-- ── SIDEBAR ─────────────────────────────────── -->
+        <aside class="sidebar" id="sidebar">
+
+            <!-- Fechar no mobile -->
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:0 6px 12px; border-bottom:1px solid rgba(0,80,140,0.08); margin-bottom:6px;">
+                <span style="font-family:'Syne',sans-serif; font-weight:800; font-size:1rem; color:var(--primary);">
+                    <i class="fa-solid fa-droplet"></i> Portal<span style="color:var(--secondary);">DMA</span>
+                </span>
+                <button onclick="closeSidebar()" aria-label="Fechar menu"
+                    style="background:none; border:none; color:var(--gray); font-size:1.1rem; cursor:pointer; padding:4px;">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="sidebar-card">
+                <div class="sidebar-section-label">Seções</div>
+
+                <a class="sidebar-nav-item active" href="./feed.html">
+                    <i class="fa-solid fa-house"></i> Início
+                    <span class="sidebar-badge">3</span>
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <i class="fa-solid fa-leaf"></i> Gestão Ambiental
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <i class="fa-solid fa-mosquito"></i> Combate à Dengue
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <i class="fa-solid fa-file-contract"></i> Licenciamento Ambiental
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <i class="fa-solid fa-circle-question"></i> Ajuda
+                </a>
+
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-section-label">Grupos</div>
+
+                <a class="sidebar-nav-item" href="#">
+                    <i class="fa-solid fa-users"></i> Colegiado CEDAE
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <i class="fa-solid fa-recycle"></i> GEAAS
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <i class="fa-solid fa-map-location-dot"></i> Geoprocessamento
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <i class="fa-solid fa-calendar-days"></i> Eventos DMA
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard ESG
+                </a>
+
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-section-label">Arquivo</div>
+
+                <a class="sidebar-nav-item" href="#">
+                    <i class="fa-solid fa-boxes-stacked"></i> Micro Congresso 2015
+                </a>
+                <a class="sidebar-nav-item" href="#">
+                    <i class="fa-solid fa-folder-open"></i> Documentos Históricos
+                </a>
+            </div>
+
+            <!-- Card acesso restrito -->
+            <div class="sidebar-card sidebar-abyss-card">
+                <div class="sidebar-section-label">Acesso Restrito</div>
+                <a class="sidebar-nav-item" href="./login.html" style="color:var(--abyss);">
+                    <i class="fa-solid fa-lock" style="color:var(--abyss);"></i> Área Técnica
+                </a>
+                <a class="sidebar-nav-item" href="./login.html" style="color:var(--abyss);">
+                    <i class="fa-solid fa-user-tie" style="color:var(--abyss);"></i> Diretoria
+                </a>
+            </div>
+
+        </aside>
+
+        <!-- ── FEED PRINCIPAL ──────────────────────────── -->
+        <main class="feed-main">
+
+            <!-- Filtros -->
+            <div class="filters-bar">
+                <div class="filter-pill active" onclick="filterFeed(this, 'all')">
+                    <i class="fa-solid fa-envelope-open-text"></i> Todas
+                </div>
+                <div class="filter-pill" onclick="filterFeed(this, 'aedes')">
+                    <i class="fa-solid fa-mosquito"></i> Módulo Aedes
+                </div>
+                <div class="filter-pill" onclick="filterFeed(this, 'recicla')">
+                    <i class="fa-solid fa-recycle"></i> Recicla
+                </div>
+                <div class="filter-pill" onclick="filterFeed(this, 'geo')">
+                    <i class="fa-solid fa-map"></i> Geoprocessamento
+                </div>
+            </div>
+
+            <!-- ── CARD 1 — Aedes (com imagem lateral) ─── -->
+            <div class="pub-card" data-category="aedes">
+                <div class="pub-card-split">
+                    <div class="pub-image-col">
+                        <!-- Troque por <img src="./assets/dengue_icon2.png" alt="..."> quando tiver o asset -->
+                        <div class="pub-img-placeholder pub-img-aedes" style="min-height:180px;">
+                            <i class="fa-solid fa-mosquito" style="color:#d97706; opacity:0.4;"></i>
                         </div>
                     </div>
-                    <div class="split-col-text">
-                        <div class="email-header">
-                            <div class="email-subject-line">
-                                <h2 class="email-subject">Rotina Semanal: Condicionantes de LO e Emissão de Certificados</h2>
-                                <span class="email-tag tag-aedes">Aedes</span>
-                            </div>
-                        </div>
-                        <div class="email-body">
-                            Atenção gerências locais: Relembramos que as unidades operacionais da CEDAE com Licença de Operação (LO) ativas ou em processo possuem condicionantes legais obrigatórias de eliminação de vetores.
-                        </div>
-                        <div class="action-banner-box">
-                            <a href="./aedes-publico.html" class="btn-invite-action">
-                                <i class="fa-solid fa-chart-line"></i> Conheça o Projeto / Saiba Mais
+                    <div class="pub-content-col">
+                        <span class="pub-tag tag-aedes">Aedes</span>
+                        <h2 class="pub-title">Rotina Semanal: Condicionantes de LO e Emissão de Certificados</h2>
+                        <p class="pub-body">
+                            Atenção gerências locais: unidades operacionais da CEDAE com Licença de Operação ativas ou em processo possuem condicionantes legais obrigatórias de eliminação de vetores.
+                        </p>
+                        <div>
+                            <a href="./aedes-publico.html" class="pub-action">
+                                <i class="fa-solid fa-arrow-right"></i> Saiba mais
                             </a>
                         </div>
                     </div>
                 </div>
+                <div class="pub-card-footer">
+                    <span class="pub-meta"><i class="fa-regular fa-calendar"></i> Jun 2026</span>
+                    <span class="pub-meta"><i class="fa-regular fa-eye"></i> Público</span>
+                </div>
             </div>
-        </div>
 
-        <div class="feed-group" data-category="recicla">
-            <div class="email-card">
-                <div class="email-header">
-                    <div class="email-subject-line">
-                        <h2 class="email-subject">Relatório Mensal de Pesagem e Indicadores ESG - Tinguá</h2>
-                        <span class="email-tag tag-recicla">Recicla</span>
+            <!-- ── CARD 2 — Recicla (com anexo) ──────────── -->
+            <div class="pub-card" data-category="recicla">
+                <div class="pub-card-simple">
+                    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:10px;">
+                        <h2 class="pub-title">Relatório Mensal de Pesagem e Indicadores ESG — Tinguá</h2>
+                        <span class="pub-tag tag-recicla" style="flex-shrink:0;">Recicla</span>
                     </div>
+                    <p class="pub-body">
+                        Compartilhamos os dados consolidados do projeto CEDAE Recicla executado na Reserva Biológica do Tinguá. Inclui indicadores de desvio de resíduos e impacto social.
+                    </p>
                 </div>
-                <div class="email-body">
-                    Compartilhamos com toda a comunidade interna os dados consolidados do projeto CEDAE Recicla executado na Reserva Biológica do Tinguá.
-                </div>
-                <div class="email-file-attachment">
-                    <i class="fa-regular fa-file-excel" style="color: var(--accent-recicla);"></i>
-                    <div><strong>indicadores_tingua_recicla.xlsx</strong></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="feed-group" data-category="geo">
-            <div class="email-card">
-                <div class="email-header">
-                    <div class="email-subject-line">
-                        <h2 class="email-subject">Atualização de Camadas Espaciais: Canal Imunana (2026)</h2>
-                        <span class="email-tag tag-geo">Geo</span>
+                <div class="pub-attachment">
+                    <i class="fa-regular fa-file-excel" style="color:var(--accent-recicla); font-size:18px;"></i>
+                    <div>
+                        <strong>indicadores_tingua_recicla.xlsx</strong>
+                        <div style="font-size:0.72rem; color:var(--gray);">Planilha · 184 KB</div>
                     </div>
+                    <a href="#" style="margin-left:auto; color:var(--accent-recicla); font-size:0.8rem; font-weight:600;">
+                        <i class="fa-solid fa-download"></i>
+                    </a>
                 </div>
-                <div class="email-body">
-                    Concluímos com sucesso o mapeamento e o processamento da análise espacial temporal do Canal Imunana.
+                <div class="pub-card-footer">
+                    <span class="pub-meta"><i class="fa-regular fa-calendar"></i> Mai 2026</span>
+                    <span class="pub-meta"><i class="fa-regular fa-eye"></i> Público</span>
                 </div>
             </div>
-        </div>
 
-    </main>
+            <!-- ── CARD 3 — Geo (com imagem full-width) ───── -->
+            <div class="pub-card" data-category="geo">
+                <div class="pub-img-full pub-img-geo" style="height:130px;">
+                    <i class="fa-solid fa-map-location-dot" style="color:#0284c7; opacity:0.35; font-size:3rem;"></i>
+                </div>
+                <div class="pub-card-simple" style="margin-top:14px;">
+                    <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:10px;">
+                        <h2 class="pub-title">Atualização de Camadas Espaciais: Canal Imunana (2026)</h2>
+                        <span class="pub-tag tag-geo" style="flex-shrink:0;">Geo</span>
+                    </div>
+                    <p class="pub-body">
+                        Concluímos o mapeamento e processamento da análise espacial temporal do Canal Imunana. As novas camadas estão disponíveis no GIS interno para consulta.
+                    </p>
+                </div>
+                <div class="pub-card-footer">
+                    <span class="pub-meta"><i class="fa-regular fa-calendar"></i> Abr 2026</span>
+                    <a href="#" class="pub-action">
+                        <i class="fa-solid fa-map"></i> Ver mapa
+                    </a>
+                </div>
+            </div>
 
+        </main>
+    </div>
+
+    <!-- ── BOTTOM NAV ──────────────────────────────────── -->
     <nav class="bottom-nav">
         <a href="./index.html" class="nav-item">
             <i class="fa-solid fa-house"></i> Início
         </a>
-        <a href="#" class="nav-item active">
+        <a href="./feed.html" class="nav-item active">
             <i class="fa-solid fa-compass"></i> Explorar
         </a>
         <a href="./login.html" class="nav-item">
@@ -372,20 +742,50 @@
     </nav>
 
     <script>
-        function filterFeed(category) {
-            const bubbles = document.querySelectorAll('.filter-bubble');
-            bubbles.forEach(b => b.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+        /* ── FILTRO DE CATEGORIAS ─────────────────── */
+        function filterFeed(el, category) {
+            document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+            el.classList.add('active');
 
-            const groups = document.querySelectorAll('.feed-group');
-            groups.forEach(g => {
-                if (category === 'all' || g.getAttribute('data-category') === category) {
-                    g.style.display = 'block';
-                } else {
-                    g.style.display = 'none';
-                }
+            document.querySelectorAll('.pub-card').forEach(card => {
+                const match = category === 'all' || card.dataset.category === category;
+                card.style.display = match ? 'block' : 'none';
+            });
+        }
+
+        /* ── DRAWER SIDEBAR (MOBILE) ──────────────── */
+        function openSidebar() {
+            document.getElementById('sidebar').classList.add('open');
+            const overlay = document.getElementById('sidebarOverlay');
+            overlay.style.display = 'block';
+            requestAnimationFrame(() => overlay.classList.add('open'));
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('open');
+            const overlay = document.getElementById('sidebarOverlay');
+            overlay.classList.remove('open');
+            setTimeout(() => { overlay.style.display = 'none'; }, 320);
+            document.body.style.overflow = '';
+        }
+
+        /* Fecha drawer ao clicar num link de navegação (mobile) */
+        document.querySelectorAll('.sidebar .sidebar-nav-item').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 680) closeSidebar();
+            });
+        });
+
+        /* ── PWA ──────────────────────────────────── */
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(r => console.log('SW ativo:', r.scope))
+                    .catch(e => console.log('SW falhou:', e));
             });
         }
     </script>
+
 </body>
 </html>
