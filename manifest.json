@@ -1,0 +1,18 @@
+{
+  "name": "Portal-DMA CEDAE",
+  "short_name": "Portal-DMA",
+  "description": "Plataforma de Inteligência e Governança Ambiental da CEDAE",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#e0f2fe",
+  "theme_color": "#0077b6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3105/3105807.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal-DMA | Conectando o Meio Ambiente</title>
+    
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#0077b6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #0077b6; /* Azul Superfície */
+            --secondary: #2a9d8f; /* Verde Sustentabilidade */
+            --abyss: #03045e; /* O Azul Mais Profundo (VIP/Admin) */
+            --dark: #1d3557;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            width: 90%;
+            margin: 40px auto;
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            border: 1px solid rgba(255,255,255,0.5);
+            text-align: center;
+        }
+
+        .badge-semana {
+            background: var(--secondary);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: pulse 2s infinite;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+            line-height: 1.2;
+        }
+
+        p.subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 35px;
+            line-height: 1.6;
+        }
+
+        /* Botão com transição para o abismo */
+        .btn-enter {
+            background: linear-gradient(135deg, var(--primary) 0%, #0096c7 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 20px rgba(0, 119, 182, 0.25);
+            transition: all 0.4s ease;
+        }
+
+        .btn-enter:hover {
+            background: linear-gradient(135deg, #005f73 0%, var(--abyss) 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(3, 4, 94, 0.35);
+        }
+
+        .profiles-title {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            color: var(--gray);
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .profile-item {
+            background: white;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--dark);
+            border: 1px solid #e2e8f0;
+        }
+
+        .profile-item i {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+            color: var(--primary);
+        }
+
+        footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 1.8rem; }
+            .profiles-grid { grid-template-columns: 1fr; }
+            .welcome-card { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-droplet"></i> Portal<span>DMA</span>
+        </div>
+        <div style="font-size: 0.9rem; color: var(--gray); font-weight: 500;">CEDAE</div>
+    </header>
+
+    <main>
+        <div class="welcome-card">
+            <div class="badge-semana">
+                <i class="fa-solid fa-leaf"></i> Especial Semana do Meio Ambiente
+            </div>
+            
+            <h1>Você é o site. <br>Você vive a sustentabilidade.</h1>
+            
+            <p class="subtitle">
+                Bem-vindo à nova plataforma de inteligência e engajamento ambiental da CEDAE. Um espaço dinâmico de autonomia, validação e monitoramento de dados feito por nós, para nós.
+            </p>
+
+            <a href="#" class="btn-enter">
+                Mergulhar no Sistema <i class="fa-solid fa-arrow-down"></i>
+            </a>
+
+            <div class="profiles-title">Níveis de Profundidade dos Dados</div>
+            <div class="profiles-grid">
+                <div class="profile-item" style="border-bottom: 3px solid #00b4d8;">
+                    <i class="fa-solid fa-users" style="color: #00b4d8;"></i>
+                    Superfície<br><span style="font-size:0.7rem; color:var(--gray)">Geral</span>
+                </div>
+                <div class="profile-item" style="border-bottom: 3px solid #0077b6;">
+                    <i class="fa-solid fa-helmet-safety" style="color: #0077b6;"></i>
+                    Zona Intermediária<br><span style="font-size:0.7rem; color:var(--gray)">Técnicos</span>
+                </div>
+                <div class="profile-item" style="border-bottom: 3px solid var(--abyss);">
+                    <i class="fa-solid fa-user-tie" style="color: var(--abyss);"></i>
+                    Abismo dos Dados<br><span style="font-size:0.7rem; color:var(--gray)">Diretoria</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        Desenvolvido pelo Departamento de Meio Ambiente — CEDAE &copy; 2026
+    </footer>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker ativo com sucesso!', reg.scope))
+                    .catch(err => console.log('Falha ao registrar o Service Worker:', err));
+            });
+        }
+    </script>
+</body>
+</html>
