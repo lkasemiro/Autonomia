@@ -1,396 +1,644 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal-DMA | Módulo Técnico Aedes</title>
+    <title>Autonomia | Módulo Aedes</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         :root {
-            --surface: #0b3d91; 
-            --twilight: #0096c7; 
-            --ocean-deep: #001d3d; 
-            --dark-bg: #0b132b; 
-            --panel-bg: rgba(20, 30, 55, 0.85);
-            --text-light: #f1faee;
-            --text-gray: #94a3b8;
-            --accent-green: #22c55e;
-            --accent-blue: #38bdf8;
-            --accent-yellow: #facc15;
-            --border-color: rgba(255, 255, 255, 0.08);
+            --bg-main: #020817;
+            --bg-secondary: #0f172a;
+            --panel: rgba(15, 23, 42, 0.92);
+            --card: rgba(30, 41, 59, 0.8);
+            --line: rgba(255,255,255,0.06);
+
+            --blue-1: #38bdf8;
+            --blue-2: #0ea5e9;
+            --blue-3: #0b3d91;
+            --blue-4: #001d3d;
+
+            --yellow: #facc15;
+            --green: #22c55e;
+            --text: #f8fafc;
+            --muted: #94a3b8;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            background: linear-gradient(180deg, var(--ocean-deep) 0%, var(--dark-bg) 100%);
-            color: var(--text-light);
+            background:
+                radial-gradient(circle at top, rgba(14,165,233,0.12), transparent 30%),
+                linear-gradient(180deg, #07111f 0%, #020617 100%);
+            color: var(--text);
             min-height: 100vh;
-            padding-bottom: 90px; /* Margem extra para não cobrir os botões na navegação inferior */
         }
 
-        /* Topbar do Módulo */
-        header {
-            background: rgba(11, 19, 43, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
+        /* HEADER */
+
+        .topbar {
             position: sticky;
             top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            z-index: 50;
+
+            height: 72px;
+            padding: 0 28px;
+
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
+
+            backdrop-filter: blur(18px);
+            background: rgba(2, 8, 23, 0.88);
+
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .logo-dash {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--text-light);
+        .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .logo-dash i {
-            color: var(--accent-blue);
-        }
-
-        .logo-dash span {
-            color: #ef4444;
-            font-weight: 700;
-            background: rgba(239, 68, 68, 0.1);
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-        }
-
-        .feed-container {
-            max-width: 600px;
-            width: 100%;
-            margin: 20px auto;
-            padding: 0 15px;
-        }
-
-        /* Seção de Autenticação / Convite */
-        .auth-invite-box {
-            background: var(--panel-bg);
-            border: 1px solid rgba(250, 204, 21, 0.3);
+        .brand-icon {
+            width: 42px;
+            height: 42px;
             border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
 
-        .auth-invite-box h3 {
-            font-size: 1.05rem;
-            color: var(--accent-yellow);
-            margin-bottom: 6px;
             display: flex;
             align-items: center;
-            gap: 8px;
-        }
+            justify-content: center;
 
-        .auth-invite-box p {
-            font-size: 0.85rem;
-            color: #cbd5e1;
-            line-height: 1.5;
-            margin-bottom: 15px;
-        }
-
-        /* Form Estilizado de Identificação Interna */
-        .focal-auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .form-select, .form-input {
-            width: 100%;
-            padding: 10px 12px;
-            border-radius: 6px;
-            background: rgba(11, 19, 43, 0.8);
-            border: 1px solid var(--border-color);
-            color: var(--text-light);
-            font-size: 0.88rem;
-        }
-
-        .form-select:focus, .form-input:focus {
-            outline: none;
-            border-color: var(--accent-blue);
-        }
-
-        .btn-submit-report {
-            background: var(--accent-green);
+            background: linear-gradient(135deg, var(--blue-2), var(--blue-4));
             color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            font-weight: 700;
-            font-size: 0.88rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: background 0.2s;
+            font-size: 1rem;
         }
 
-        .btn-submit-report:hover {
-            background: #16a34a;
+        .brand h1 {
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 0.3px;
         }
 
-        /* Botão para Entrada de Mostruário / Mobile ready */
-        .btn-mock-mobile {
-            background: transparent;
-            color: #cbd5e1;
-            border: 1px dashed rgba(56, 189, 248, 0.5);
-            padding: 11px;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.82rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-            margin-top: 4px;
+        .brand p {
+            color: var(--muted);
+            font-size: 0.75rem;
         }
 
-        .btn-mock-mobile:hover {
-            background: rgba(56, 189, 248, 0.08);
-            color: var(--accent-blue);
-            border-color: var(--accent-blue);
-        }
-
-        /* Despachos / Cards de E-mail Internos do Módulo */
-        .email-card {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 15px;
-        }
-
-        .email-header {
-            margin-bottom: 12px;
-        }
-
-        .email-subject-line {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .email-subject {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--text-light);
-            line-height: 1.3;
-        }
-
-        .email-tag {
+        .restricted-tag {
+            background: rgba(239,68,68,0.12);
+            color: #f87171;
+            border: 1px solid rgba(239,68,68,0.2);
+            padding: 6px 10px;
+            border-radius: 999px;
             font-size: 0.7rem;
             font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--accent-blue);
-            flex-shrink: 0;
         }
 
-        .email-meta-line {
+        /* LAYOUT */
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            min-height: calc(100vh - 72px);
+        }
+
+        /* LADO VISUAL */
+
+        .hero-side {
+            padding: 50px;
+            border-right: 1px solid rgba(255,255,255,0.04);
+
             display: flex;
-            justify-content: space-between;
-            font-size: 0.78rem;
-            color: var(--text-gray);
-            margin-top: 6px;
+            flex-direction: column;
+            justify-content: center;
+            gap: 28px;
         }
 
-        .email-sender {
+        .hero-label {
+            width: fit-content;
+            background: rgba(56,189,248,0.08);
+            color: var(--blue-1);
+            border: 1px solid rgba(56,189,248,0.15);
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 4vw, 4rem);
+            line-height: 1;
+            font-weight: 900;
+            max-width: 580px;
+        }
+
+        .hero-title span {
+            color: var(--blue-1);
+        }
+
+        .hero-description {
+            color: #cbd5e1;
+            max-width: 560px;
+            line-height: 1.7;
+            font-size: 0.96rem;
+        }
+
+        .hero-gallery {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 18px;
+            margin-top: 10px;
+        }
+
+        .gallery-main,
+        .gallery-side {
+            border-radius: 26px;
+            overflow: hidden;
+            position: relative;
+            min-height: 260px;
+        }
+
+        .gallery-main {
+            background:
+                linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.5)),
+                url('./assets/dengue_icon2.png') center/contain no-repeat,
+                linear-gradient(135deg, #0f172a, #020617);
+
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .gallery-side {
+            background:
+                linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.6)),
+                url('./assets/aedes_bg.png') center/cover;
+
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            padding: 22px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .gallery-overlay h3 {
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+
+        .gallery-overlay p {
+            color: #cbd5e1;
+            font-size: 0.8rem;
+            line-height: 1.5;
+        }
+
+        /* PAINEL OPERACIONAL */
+
+        .panel-side {
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+
+            background:
+                linear-gradient(180deg, rgba(15,23,42,0.95), rgba(2,6,23,0.98));
+        }
+
+        .panel-card {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            padding: 24px;
+        }
+
+        .panel-title {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 10px;
+            margin-bottom: 8px;
         }
 
-        .email-body {
+        .panel-title i {
+            color: var(--blue-1);
+        }
+
+        .panel-title h2 {
+            font-size: 1rem;
+        }
+
+        .panel-description {
+            color: var(--muted);
             font-size: 0.85rem;
-            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* FORM */
+
+        .focal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .focal-form select,
+        .focal-form input {
+            background: rgba(15,23,42,0.9);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: white;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+        }
+
+        .focal-form select:focus,
+        .focal-form input:focus {
+            outline: none;
+            border-color: var(--blue-1);
+        }
+
+        .btn-primary {
+            height: 52px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+
+            background: linear-gradient(135deg, var(--blue-2), var(--blue-3));
+            color: white;
+
+            font-weight: 800;
+            font-size: 0.9rem;
+
+            transition: 0.25s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            height: 50px;
+            border-radius: 14px;
+            cursor: pointer;
+
+            border: 1px dashed rgba(56,189,248,0.4);
+            background: transparent;
+            color: var(--blue-1);
+
+            font-weight: 700;
+        }
+
+        /* CERTIFICADOS */
+
+        .certificate-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .certificate-card {
+            background: rgba(15,23,42,0.65);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .certificate-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(56,189,248,0.2);
+        }
+
+        .certificate-image {
+            height: 120px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .certificate-image.one {
+            background-image: url('./assets/certificado1.png');
+        }
+
+        .certificate-image.two {
+            background-image: url('./assets/certificado2.png');
+        }
+
+        .certificate-content {
+            padding: 16px;
+        }
+
+        .certificate-content h3 {
+            font-size: 0.88rem;
+            margin-bottom: 6px;
+        }
+
+        .certificate-content p {
+            color: var(--muted);
+            font-size: 0.75rem;
             line-height: 1.5;
-            border-left: 2px solid var(--surface);
-            padding-left: 10px;
             margin-bottom: 12px;
         }
 
-        .email-footer-actions {
-            display: flex;
-            gap: 15px;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            padding-top: 10px;
-            font-size: 0.78rem;
-            color: var(--text-gray);
-        }
+        .certificate-button {
+            width: 100%;
+            height: 40px;
 
-        .email-footer-actions span {
+            border: none;
+            border-radius: 10px;
+
+            background: rgba(34,197,94,0.12);
+            color: var(--green);
+
+            font-weight: 700;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
-        .email-footer-actions span:hover {
-            color: var(--text-light);
-        }
+        /* AVISOS */
 
-        /* Bottom Nav Fixa Ajustada e Protegida */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(11, 19, 43, 0.96);
-            backdrop-filter: blur(15px);
-            height: 70px;
-            border-top: 1px solid rgba(56, 189, 248, 0.2);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 100;
-            /* Suporte completo para a barra virtual inferior em telas de celulares modernos */
-            padding-bottom: min(12px, env(safe-area-inset-bottom)); 
-        }
-
-        .nav-item {
+        .notice-list {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            color: var(--text-gray);
-            font-size: 0.75rem;
-            text-decoration: none;
-            gap: 4px;
-            flex: 1;
-            text-align: center;
+            gap: 12px;
         }
-        .nav-item i { font-size: 1.25rem; }
-        .nav-item.active { color: var(--accent-blue); }
+
+        .notice-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 18px;
+            padding: 16px;
+        }
+
+        .notice-card h4 {
+            font-size: 0.88rem;
+            margin-bottom: 6px;
+        }
+
+        .notice-card p {
+            color: var(--muted);
+            font-size: 0.78rem;
+            line-height: 1.6;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 1100px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-side {
+                padding-bottom: 0;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .hero-side,
+            .panel-side {
+                padding: 24px;
+            }
+
+            .hero-gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .certificate-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 2.3rem;
+            }
+        }
+
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-dash">
-            <i class="fa-solid fa-mosquito"></i> Canal Técnico Aedes <span>RESTRITO</span>
+    <header class="topbar">
+
+        <div class="brand">
+            <div class="brand-icon">
+                <i class="fa-solid fa-mosquito"></i>
+            </div>
+
+            <div>
+                <h1>Autonomia • Operacional Aedes</h1>
+                <p>Controle de vistorias e monitoramento técnico</p>
+            </div>
         </div>
-        <a href="./feed.html" style="color: var(--text-gray); text-decoration: none; font-size: 0.85rem;">
-            <i class="fa-solid fa-arrow-left"></i> Voltar ao Feed
-        </a>
+
+        <div class="restricted-tag">
+            ÁREA RESTRITA
+        </div>
+
     </header>
 
-    <main class="feed-container">
+    <main class="layout">
 
-        <section class="auth-invite-box">
-            <h3><i class="fa-solid fa-user-shield"></i> Identificação do Focal Operacional</h3>
-            <p>Selecione sua credencial técnica abaixo e insira sua matrícula para abrir e transmitir o Relatório de Inspeção Semanal de Criadouros.</p>
-            
-            <form class="focal-auth-form" onsubmit="event.preventDefault(); window.location.href='./aedes-vistoria-focal.html';">
-                <select class="form-select" id="focalSelect" required>
-                    <option value="">Selecione seu nome da lista oficial...</option>
-                    <option value="1">Focal - Carlos Silva (Subestações Centro)</option>
-                    <option value="2">Focal - Marcos Souza (Subestação Tinguá)</option>
-                    <option value="3">Focal - Jorge Santos (Sistemas Imunana)</option>
-                    <option value="4">Focal - Amanda Lima (Complexo Laranjal)</option>
-                </select>
-                <input type="password" class="form-input" placeholder="Matrícula funcional (ex: 0-000000-0)" required>
-                
-                <button type="submit" class="btn-submit-report">
-                    <i class="fa-solid fa-file-signature"></i> Validar Acesso e Iniciar Vistoria
-                </button>
+        <!-- LADO VISUAL -->
 
-                <button type="button" class="btn-mock-mobile" onclick="window.location.href='./aedes-vistoria-focal.html';">
-                    <i class="fa-solid fa-mobile-screen-button"></i> Modo Mostruário: Simular Grade no Celular
-                </button>
-            </form>
+        <section class="hero-side">
+
+            <div class="hero-label">
+                MONITORAMENTO OPERACIONAL
+            </div>
+
+            <h2 class="hero-title">
+                Gestão inteligente do programa
+                <span>Aedes</span>
+            </h2>
+
+            <p class="hero-description">
+                Plataforma operacional do programa de combate ao Aedes aegypti.
+                Os focais realizam vistorias, enviam relatórios semanais,
+                acompanham indicadores e emitem certificados diretamente
+                pelo sistema, sem dependência da equipe de TI.
+            </p>
+
+            <div class="hero-gallery">
+
+                <div class="gallery-main">
+                    <div class="gallery-overlay">
+                        <h3>Vistorias Operacionais</h3>
+                        <p>
+                            Registro técnico semanal de focos, pendências,
+                            evidências fotográficas e indicadores.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="gallery-side">
+                    <div class="gallery-overlay">
+                        <h3>Certificação Interna</h3>
+                        <p>
+                            Emissão automatizada de certificados de participação
+                            e treinamentos ambientais.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
         </section>
 
-        <h2 style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-gray); letter-spacing: 0.05em; margin-bottom: 12px; padding-left: 4px;">
-            Despachos e Ordens de Serviço Recentes
-        </h2>
+        <!-- PAINEL -->
 
-        <div class="email-card">
-            <div class="email-header">
-                <div class="email-subject-line">
-                    <h3 class="email-subject">[OS-DMA] Reforço de Inspeção Pós-Pluviometria</h3>
-                    <span class="email-tag">Crítico</span>
-                </div>
-                <div class="email-meta-line">
-                    <div class="email-sender">
-                        <i class="fa-solid fa-shield-halved" style="color: var(--accent-yellow);"></i>
-                        De: <strong>Supervisão DMA</strong>
-                    </div>
-                    <div class="email-time">Há 2h</div>
-                </div>
-            </div>
-            <div class="email-body">
-                Com o registro de precipitação acumulada acima da média nas últimas 48 horas, fica determinado a todos os focais o cumprimento imediato do protocolo de varredura em pátios de transformadores e áreas abertas de estocagem.
-            </div>
-            <div class="email-footer-actions">
-                <span><i class="fa-solid fa-reply"></i> Confirmar Ciente</span>
-                <span><i class="fa-solid fa-circle-info"></i> Ver Diretriz</span>
-            </div>
-        </div>
+        <section class="panel-side">
 
-        <div class="email-card">
-            <div class="email-header">
-                <div class="email-subject-line">
-                    <h3 class="email-subject">Atualização de Parâmetros de Coleta de Dados</h3>
-                    <span class="email-tag" style="background: rgba(34,197,94,0.1); color: var(--accent-green);">Informativo</span>
+            <!-- LOGIN -->
+
+            <div class="panel-card">
+
+                <div class="panel-title">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <h2>Entrada de Focais</h2>
                 </div>
-                <div class="email-meta-line">
-                    <div class="email-sender">
-                        <i class="fa-solid fa-gear"></i>
-                        De: <strong>Engenharia de Sistemas DMA</strong>
+
+                <p class="panel-description">
+                    Valide sua matrícula funcional para acessar os formulários
+                    de vistoria, relatórios técnicos e histórico operacional.
+                </p>
+
+                <form class="focal-form">
+
+                    <select required>
+                        <option>Selecione seu nome...</option>
+                        <option>Carlos Silva</option>
+                        <option>Marcos Souza</option>
+                        <option>Amanda Lima</option>
+                    </select>
+
+                    <input
+                        type="password"
+                        placeholder="Matrícula funcional"
+                        required
+                    >
+
+                    <button class="btn-primary">
+                        Iniciar Vistoria
+                    </button>
+
+                      <button type="button" class="btn-mock-mobile" onclick="window.location.href='./aedes-vistoria-focal.html';">
+                    <i class="fa-solid fa-mobile-screen-button"></i> Modo Mostruário: Simular Grade no Celular
+
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- CERTIFICADOS -->
+
+            <div class="panel-card">
+
+                <div class="panel-title">
+                    <i class="fa-solid fa-certificate"></i>
+                    <h2>Certificados e Treinamentos</h2>
+                </div>
+
+                <p class="panel-description">
+                    Área dedicada à emissão de certificados internos do programa,
+                    capacitações e treinamentos ambientais.
+                </p>
+
+                <div class="certificate-grid">
+
+                    <div class="certificate-card">
+
+                        <div class="certificate-image one"></div>
+
+                        <div class="certificate-content">
+                            <h3>Treinamento Operacional</h3>
+
+                            <p>
+                                Certificado para participação nas atividades
+                                operacionais do programa.
+                            </p>
+
+                            <button class="certificate-button">
+                                Emitir Certificado
+                            </button>
+                        </div>
+
                     </div>
-                    <div class="email-time">Ontem</div>
+
+                    <div class="certificate-card">
+
+                        <div class="certificate-image two"></div>
+
+                        <div class="certificate-content">
+                            <h3>Capacitação Ambiental</h3>
+
+                            <p>
+                                Emissão vinculada às capacitações internas
+                                e treinamentos DMA.
+                            </p>
+
+                            <button class="certificate-button">
+                                Emitir Certificado
+                            </button>
+                        </div>
+
+                    </div>
+
                 </div>
+
             </div>
-            <div class="email-body">
-                A partir desta semana, o preenchimento do indicador de calhas prediais passa a exigir a discriminação de desnível estrutural. Caso identifique retenção persistente de água limpa, use o campo de observações do relatório.
+
+            <!-- AVISOS -->
+
+            <div class="panel-card">
+
+                <div class="panel-title">
+                    <i class="fa-solid fa-bell"></i>
+                    <h2>Últimos Comunicados</h2>
+                </div>
+
+                <div class="notice-list">
+
+                    <div class="notice-card">
+                        <h4>Reforço pós-chuva</h4>
+                        <p>
+                            Intensificar inspeções em áreas abertas e
+                            superfícies de acúmulo após precipitações.
+                        </p>
+                    </div>
+
+                    <div class="notice-card">
+                        <h4>Atualização de protocolo</h4>
+                        <p>
+                            O preenchimento das calhas passa a exigir
+                            classificação de retenção estrutural.
+                        </p>
+                    </div>
+
+                </div>
+
             </div>
-            <div class="email-footer-actions">
-                <span><i class="fa-solid fa-reply"></i> Confirmar Ciente</span>
-                <span><i class="fa-solid fa-circle-info"></i> Ver Diretriz</span>
-            </div>
-        </div>
+
+        </section>
 
     </main>
-
-    <nav class="bottom-nav">
-        <a href="./index.html" class="nav-item">
-            <i class="fa-solid fa-house"></i>
-            Início
-        </a>
-        <a href="./feed.html" class="nav-item">
-            <i class="fa-solid fa-compass"></i>
-            Explorar
-        </a>
-        <a href="#" class="nav-item active">
-            <i class="fa-solid fa-mosquito"></i>
-            Aedes
-        </a>
-        <a href="./aedes-publico.html" class="nav-item">
-            <i class="fa-solid fa-chart-line"></i>
-            Dados
-        </a>
-    </nav>
 
 </body>
 </html>
