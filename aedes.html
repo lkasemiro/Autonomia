@@ -32,7 +32,7 @@
             background: linear-gradient(180deg, var(--ocean-deep) 0%, var(--dark-bg) 100%);
             color: var(--text-light);
             min-height: 100vh;
-            padding-bottom: 80px; 
+            padding-bottom: 90px; /* Margem extra para não cobrir os botões na navegação inferior */
         }
 
         /* Topbar do Módulo */
@@ -146,6 +146,30 @@
             background: #16a34a;
         }
 
+        /* Botão para Entrada de Mostruário / Mobile ready */
+        .btn-mock-mobile {
+            background: transparent;
+            color: #cbd5e1;
+            border: 1px dashed rgba(56, 189, 248, 0.5);
+            padding: 11px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.82rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            margin-top: 4px;
+        }
+
+        .btn-mock-mobile:hover {
+            background: rgba(56, 189, 248, 0.08);
+            color: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
         /* Despachos / Cards de E-mail Internos do Módulo */
         .email-card {
             background: var(--panel-bg);
@@ -227,20 +251,22 @@
             color: var(--text-light);
         }
 
-        /* Bottom Nav Fixa */
+        /* Bottom Nav Fixa Ajustada e Protegida */
         .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background: rgba(11, 19, 43, 0.95);
+            background: rgba(11, 19, 43, 0.96);
             backdrop-filter: blur(15px);
-            height: 65px;
+            height: 70px;
             border-top: 1px solid rgba(56, 189, 248, 0.2);
             display: flex;
             justify-content: space-around;
             align-items: center;
             z-index: 100;
+            /* Suporte completo para a barra virtual inferior em telas de celulares modernos */
+            padding-bottom: min(12px, env(safe-area-inset-bottom)); 
         }
 
         .nav-item {
@@ -251,8 +277,10 @@
             font-size: 0.75rem;
             text-decoration: none;
             gap: 4px;
+            flex: 1;
+            text-align: center;
         }
-        .nav-item i { font-size: 1.3rem; }
+        .nav-item i { font-size: 1.25rem; }
         .nav-item.active { color: var(--accent-blue); }
     </style>
 </head>
@@ -273,11 +301,11 @@
             <h3><i class="fa-solid fa-user-shield"></i> Identificação do Focal Operacional</h3>
             <p>Selecione sua credencial técnica abaixo e insira sua matrícula para abrir e transmitir o Relatório de Inspeção Semanal de Criadouros.</p>
             
-            <form class="focal-auth-form" onsubmit="event.preventDefault(); alert('Autenticação aceita. Grade técnica de vistorias liberada no terminal local.');">
+            <form class="focal-auth-form" onsubmit="event.preventDefault(); window.location.href='./aedes-vistoria-focal.html';">
                 <select class="form-select" id="focalSelect" required>
                     <option value="">Selecione seu nome da lista oficial...</option>
                     <option value="1">Focal - Carlos Silva (Subestações Centro)</option>
-                    <option value="2">Focal - Mariana Costa (ETA Guandu)</option>
+                    <option value="2">Focal - Marcos Souza (Subestação Tinguá)</option>
                     <option value="3">Focal - Jorge Santos (Sistemas Imunana)</option>
                     <option value="4">Focal - Amanda Lima (Complexo Laranjal)</option>
                 </select>
@@ -285,6 +313,10 @@
                 
                 <button type="submit" class="btn-submit-report">
                     <i class="fa-solid fa-file-signature"></i> Validar Acesso e Iniciar Vistoria
+                </button>
+
+                <button type="button" class="btn-mock-mobile" onclick="window.location.href='./aedes-vistoria-focal.html';">
+                    <i class="fa-solid fa-mobile-screen-button"></i> Modo Mostruário: Simular Grade no Celular
                 </button>
             </form>
         </section>

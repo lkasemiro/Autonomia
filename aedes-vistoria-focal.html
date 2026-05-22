@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aedes | Vistoria Semanal do Focal (Mobile-Ready)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <style>
+    :root {
+      /* Paleta Alinhada ao Design System DMA */
+      --bg-page: #f8fafc;
+      --bg-card: #ffffff;
+      --primary: #0b3d91;
+      --primary-hover: #1e40af;
+      --accent-cyan: #0284c7;
+      --border-color: #cbd5e1;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --success: #16a34a;
+    }
+
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      padding-bottom: 40px;
+    }
+
+    /* Topbar Corporativa */
+    .topbar {
+      background: var(--primary);
+      color: #ffffff;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .topbar-left a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      background: rgba(255,255,255,0.1);
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+
+    /* Cabeçalho de Contexto */
+    .focal-header-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .focal-header-card h2 {
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+      color: var(--primary);
+    }
+
+    .focal-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+      background: #f1f5f9;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    /* FORMULÁRIO E GRADE MOBILE-FIRST */
+    .grid-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    /* Layout de Tabela para Computadores (Telas Grandes) */
+    .responsive-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .responsive-table th {
+      background: #f1f5f9;
+      color: var(--text-main);
+      padding: 14px;
+      font-weight: 600;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .responsive-table td {
+      padding: 14px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: middle;
+    }
+
+    /* Elementos de Input dentro da Grade */
+    .input-cell {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      outline: none;
+      background-color: #f8fafc;
+    }
+    .input-cell:focus {
+      border-color: var(--accent-cyan);
+      background-color: #ffffff;
+    }
+
+    /* ──── ADAPTAÇÃO CRUCIAL PARA CELULAR (BREAKPOINT 768px) ──── */
+    @media (max-width: 768px) {
+      /* Esconde o cabeçalho original da tabela */
+      .responsive-table thead {
+        display: none;
+      }
+      
+      /* Transforma as tags da tabela em blocos empilhados */
+      .responsive-table, .responsive-table tbody, .responsive-table tr, .responsive-table td {
+        display: block;
+        width: 100%;
+      }
+
+      /* Cada linha vira um Card Isolado de Unidade */
+      .responsive-table tr {
+        background: #ffffff;
+        border-bottom: 8px solid #e2e8f0; /* Separação nítida entre unidades */
+        padding: 16px;
+      }
+
+      .responsive-table tr:last-child {
+        border-bottom: none;
+      }
+
+      /* Formatação de cada célula simulando um Label em negrito */
+      .responsive-table td {
+        border-bottom: 1px dashed #f1f5f9;
+        padding: 10px 0;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      /* Injeta o nome da coluna via CSS Pseudo-Elemento */
+      .responsive-table td::before {
+        content: attr(data-label);
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: var(--accent-cyan);
+        letter-spacing: 0.05em;
+      }
+
+      /* Destaca o nome da Unidade na parte superior do card */
+      .responsive-table td:first-child {
+        background: #f8fafc;
+        margin: -16px -16px 12px -16px;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .responsive-table td:first-child::before {
+        content: "Unidade Operacional sob Responsabilidade";
+      }
+      .responsive-table td:first-child strong {
+        font-size: 1.05rem;
+        color: var(--primary);
+      }
+    }
+
+    /* Área de Envio */
+    .submit-bar {
+      margin-top: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .btn-submit-report {
+      background: var(--success);
+      color: #ffffff;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      justify-content: center;
+      max-width: 320px;
+      box-shadow: 0 4px 12px rgba(22, 163, 74, 0.2);
+    }
+    .btn-submit-report:hover { background: #15803d; }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <i class="fa-solid fa-mosquito"></i>
+      <strong>Módulo Aedes · Coleta de Campo</strong>
+    </div>
+    <a href="./login.html"><i class="fa-solid fa-chevron-left"></i> Sair</a>
+  </header>
+
+  <main class="container">
+    
+    <section class="focal-header-card">
+      <h2>Painel de Lançamento Semanal</h2>
+      <p style="font-size: 0.88rem; color: var(--text-muted);">Preencha o status sanitário vetorial de suas unidades regulamentadas abaixo. No celular, cada linha torna-se um formulário vertical simplificado.</p>
+      
+      <div class="focal-meta">
+        <div><i class="fa-solid fa-user"></i> Agente Focal: <strong id="txtFocalNome">Marcos Souza</strong></div>
+        <div><i class="fa-solid fa-id-card"></i> Matrícula: <strong>3120-4</strong></div>
+        <div><i class="fa-solid fa-calendar-week"></i> Semana Epidemiológica: <strong>Semana 21 (2026)</strong></div>
+      </div>
+    </section>
+
+    <form id="formVistoria" onsubmit="executeMockSubmit(event)">
+      <div class="grid-wrapper">
+        <table class="responsive-table">
+          <thead>
+            <tr>
+              <th>Unidade de Operação</th>
+              <th>Status da Vistoria</th>
+              <th>Focos Identificados?</th>
+              <th>Localização do Foco</th>
+              <th>Ação Corretiva Realizada</th>
+            </tr>
+          </thead>
+          <tbody id="gridUnidadesBody">
+            </tbody>
+        </table>
+      </div>
+
+      <section class="submit-bar">
+        <button type="submit" class="btn-submit-report">
+          <i class="fa-solid fa-cloud-arrow-up"></i> Transmitir Relatório à DMA
+        </button>
+      </section>
+    </form>
+
+  </main>
+
+  <script>
+    // Simulação de Dados de Unidades Vinculadas ao Focal Ativo
+    const MOCK_UNIDADES = [
+      { id: 101, nome: "ETA Guandu - Setor de Tratamento" },
+      { id: 102, nome: "Subestação Tinguá - Elevatória" },
+      { id: 103, nome: "Reservatório Elevado Milégis" }
+    ];
+
+    // Inicializa a renderização injetando os atributos data-label para funcionamento mobile
+    document.addEventListener("DOMContentLoaded", () => {
+      const tbody = document.getElementById("gridUnidadesBody");
+      tbody.innerHTML = ""; // Limpa carregamento
+
+      MOCK_UNIDADES.forEach(unidade => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td data-label="Unidade de Operação">
+            <strong>${unidade.nome}</strong>
+          </td>
+          <td data-label="Status da Vistoria">
+            <select class="input-cell" required onchange="toggleRowFields(this)">
+              <option value="realizada">Realizada Conforme Norma</option>
+              <option value="fechada">Unidade Inacessível / Fechada</option>
+              <option value="nao_realizada">Não Realizada por Outro Motivo</option>
+            </select>
+          </td>
+          <td data-label="Focos Identificados?">
+            <select class="input-cell field-foco" required>
+              <option value="nao">Não Detectado</option>
+              <option value="sim">Sim (Larvas Encontradas)</option>
+            </select>
+          </td>
+          <td data-label="Localização do Foco">
+            <input type="text" class="input-cell field-loc" placeholder="Ex: Calha, Caixa d'água, Ralo...">
+          </td>
+          <td data-label="Ação Corretiva Realizada">
+            <input type="text" class="input-cell field-acao" placeholder="Ex: Limpeza com cloro, vedação...">
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    });
+
+    // Controla bloqueio lógico de campos se a unidade estiver fechada (conforme regra técnica original)
+    function toggleRowFields(selectElement) {
+      const row = selectElement.closest("tr");
+      const isClosed = selectElement.value !== "realizada";
+      
+      row.querySelector(".field-foco").disabled = isClosed;
+      row.querySelector(".field-loc").disabled = isClosed;
+      row.querySelector(".field-acao").disabled = isClosed;
+      
+      if(isClosed) {
+        row.querySelector(".field-foco").value = "nao";
+        row.querySelector(".field-loc").value = "";
+        row.querySelector(".field-acao").value = "";
+      }
+    }
+
+    // Processamento da Transmissão e Envio Seguro para a Área Técnica
+    function executeMockSubmit(event) {
+      event.preventDefault();
+      alert("Sucesso! O lote de vistorias da semana foi criptografado e transmitido com sucesso. Os dados já estão disponíveis no Control Center da Área Técnica para conferência.");
+      window.location.href = "./feed.html";
+    }
+  </script>
+</body>
+</html>

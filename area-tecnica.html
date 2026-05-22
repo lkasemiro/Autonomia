@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área Técnica | Portal DMA Restrito</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Paleta Deep Blue - Focada, Segura e Profunda */
+            --bg-main: #020617; /* Slate ultra profundo */
+            --bg-card: #0f172a; /* Slate clássico técnico */
+            --bg-input: #1e293b;
+            --border-tech: rgba(51, 65, 85, 0.5);
+            --border-glow: rgba(2, 132, 199, 0.3);
+            
+            --text-title: #f8fafc;
+            --text-body: #94a3b8;
+            --text-muted: #64748b;
+            
+            --tech-blue: #38bdf8; /* Azul cyan operacional */
+            --tech-green: #10b981;
+            --tech-red: #ef4444;
+            --tech-orange: #f59e0b;
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar Técnica Lateral */
+        aside {
+            width: 260px;
+            background-color: var(--bg-card);
+            border-right: 1px solid var(--border-tech);
+            display: flex;
+            flex-direction: column;
+            padding: 24px 16px;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-title);
+            font-weight: 700;
+            font-size: 1.15rem;
+            margin-bottom: 32px;
+            padding-left: 8px;
+        }
+        .sidebar-brand i { color: var(--tech-blue); }
+
+        .menu-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin: 16px 0 8px 8px;
+            font-weight: 600;
+        }
+
+        .sidebar-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-body);
+            padding: 12px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            font-size: 0.88rem;
+            font-weight: 500;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+        .sidebar-btn:hover {
+            background: rgba(255,255,255,0.03);
+            color: var(--text-title);
+        }
+        .sidebar-btn.active {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--tech-blue);
+            font-weight: 600;
+        }
+
+        /* Container de Conteúdo Principal */
+        main {
+            margin-left: 260px;
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+            width: calc(100% - 260px);
+        }
+
+        /* Header de Contexto */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border-tech);
+            padding-bottom: 20px;
+        }
+        .page-header h1 { font-size: 1.6rem; color: var(--text-title); font-weight: 700; }
+
+        .user-pill {
+            background: var(--bg-card);
+            border: 1px solid var(--border-tech);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            color: var(--text-title);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .user-pill .dot { width: 8px; height: 8px; background: var(--tech-green); border-radius: 50%; }
+
+        /* Painéis Operacionais (Abas Switchable) */
+        .tech-panel { display: none; }
+        .tech-panel.active { display: block; }
+
+        /* Componentes de Cards e Layout */
+        .grid-two-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .tech-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-tech);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            margin-bottom: 24px;
+        }
+
+        .tech-card h3 {
+            font-size: 1.1rem;
+            color: var(--text-title);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Formulários Técnicos */
+        .tech-form-group {
+            margin-bottom: 16px;
+        }
+        .tech-form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+        .tech-form-group input, .tech-form-group select, .tech-form-group textarea {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-tech);
+            border-radius: 6px;
+            padding: 12px;
+            color: var(--text-title);
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .tech-form-group input:focus, .tech-form-group select:focus, .tech-form-group textarea:focus {
+            border-color: var(--tech-blue);
+            box-shadow: 0 0 8px var(--border-glow);
+        }
+
+        .btn-tech-primary {
+            background: var(--tech-blue);
+            color: var(--bg-main);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-tech-primary:hover { background: #56cbfb; }
+
+        /* Tabelas e Listas de Controle Interno */
+        .tech-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+        .tech-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+        .tech-table th {
+            background: var(--bg-input);
+            color: var(--text-title);
+            padding: 12px;
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-tech);
+        }
+        .tech-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid var(--border-tech);
+        }
+
+        /* Emblemas de status */
+        .status-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .status-pending { background: rgba(245, 158, 11, 0.1); color: var(--tech-orange); }
+        .status-approved { background: rgba(16, 185, 129, 0.1); color: var(--tech-green); }
+
+        .actions-cell {
+            display: flex;
+            gap: 8px;
+        }
+        .action-icon-btn {
+            background: var(--bg-input);
+            border: 1px solid var(--border-tech);
+            color: var(--text-title);
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .action-icon-btn.approve:hover { color: var(--tech-green); border-color: var(--tech-green); }
+        .action-icon-btn.reject:hover { color: var(--tech-red); border-color: var(--tech-red); }
+
+        /* Inbox de Núcleos */
+        .comms-history {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 16px;
+        }
+        .comm-bubble {
+            background: var(--bg-input);
+            border-left: 3px solid var(--tech-blue);
+            padding: 12px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+        }
+        .comm-bubble-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="sidebar-brand">
+            <i class="fa-solid fa-square-poll-vertical"></i> Control Center DMA
+        </div>
+        
+        <div class="menu-label">Gestão de Feed</div>
+        <button class="sidebar-btn active" onclick="switchPanel('feed-post')">
+            <i class="fa-solid fa-pen-to-square"></i> Nova Postagem
+        </button>
+
+        <div class="menu-label">Acessos e Controles</div>
+        <button class="sidebar-btn" onclick="switchPanel('logins-admin')">
+            <i class="fa-solid fa-users-gear"></i> Administrar Logins
+        </button>
+
+        <div class="menu-label">Interdepartamental</div>
+        <button class="sidebar-btn" onclick="switchPanel('nucleos-comms')">
+            <i class="fa-solid fa-comments-satellite"></i> Núcleos Internos
+        </button>
+
+        <div class="menu-label" style="margin-top: auto;">Sessão Técnica</div>
+        <a href="./feed.html" class="sidebar-btn" style="text-decoration: none; color: var(--tech-red);">
+            <i class="fa-solid fa-power-off"></i> Sair da Área Técnica
+        </a>
+    </aside>
+
+    <main>
+        <div class="page-header">
+            <div>
+                <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--tech-blue);">Ambiente de Gerenciamento Restrito</span>
+                <h1 id="panelTitle">Gerenciador de Postagens Corporativas</h1>
+            </div>
+            <div class="user-pill">
+                <div class="dot"></div>
+                <span>Técnico DMA: <strong>Luisa (Eng. Agrimensura)</strong></span>
+            </div>
+        </div>
+
+        <section id="panel-feed-post" class="tech-panel active">
+            <div class="grid-two-cols">
+                <div class="tech-card">
+                    <h3><i class="fa-solid fa-bullhorn" style="color: var(--tech-blue);"></i> Publicar Informação no Explorar</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">O conteúdo postado aqui ficará imediatamente visível na página pública para todos os focais e usuários da empresa.</p>
+                    
+                    <form onsubmit="simulatePost(event)">
+                        <div class="tech-form-group">
+                            <label>Atividade / Núcleo Regulatório</label>
+                            <select id="postCategory" required>
+                                <option value="aedes">Módulo Aedes</option>
+                                <option value="recicla">CEDAE Recicla</option>
+                                <option value="geo">Geoprocessamento</option>
+                            </select>
+                        </div>
+                        <div class="tech-form-group">
+                            <label>Assunto da Publicação (Subject)</label>
+                            <input type="text" id="postSubject" placeholder="Ex: Emissão de Certificados e Alerta de Condicionantes" required>
+                        </div>
+                        <div class="tech-form-group">
+                            <label>Mensagem / Conteúdo Escrito</label>
+                            <textarea id="postBody" rows="5" placeholder="Descreva os prazos, condicionantes de LO ou atualizações de dados..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-tech-primary"><i class="fa-solid fa-paper-plane"></i> Despachar para o Explorar</button>
+                    </form>
+                </div>
+
+                <div class="tech-card">
+                    <h3><i class="fa-solid fa-clock-rotate-left"></i> Histórico Recente de Disparos</h3>
+                    <div class="comms-history">
+                        <div class="comm-bubble">
+                            <div class="comm-bubble-meta"><span>Geoprocessamento</span><span>Há 2d</span></div>
+                            <strong>Atualização de Camadas Espaciais: Canal Imunana (2026)</strong>
+                        </div>
+                        <div class="comm-bubble">
+                            <div class="comm-bubble-meta"><span>Recicla</span><span>Ontem</span></div>
+                            <strong>Relatório Mensal de Pesagem e Indicadores ESG - Tinguá</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="panel-logins-admin" class="tech-panel">
+            <div class="tech-card">
+                <h3><i class="fa-solid fa-user-shield" style="color: var(--tech-orange);"></i> Triagem e Validação de Credenciais</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">Analise os pedidos enviados de acordo com a posição institucional informada pelo funcionário antes de liberar o acesso de envio de relatórios.</p>
+                
+                <div class="tech-table-wrapper">
+                    <table class="tech-table">
+                        <thead>
+                            <tr>
+                                <th>Funcionário / Matrícula</th>
+                                <th>Unidade Operacional</th>
+                                <th>Cargo Declarado</th>
+                                <th>Função Solicitada</th>
+                                <th>Status Interno</th>
+                                <th>Ações Técnicas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Carlos Roberto</strong> <span style="color: var(--text-muted);">(Mat: 4951-2)</span></td>
+                                <td>ETA Guandu</td>
+                                <td>Supervisor de Operações</td>
+                                <td><span style="color: var(--tech-blue);">Focal Técnico</span></td>
+                                <td><span class="status-badge status-pending">Aguardando Avaliação</span></td>
+                                <td class="actions-cell">
+                                    <button class="action-icon-btn approve" title="Aprovar Cadastro" onclick="alert('Focal homologado no sistema!')"><i class="fa-solid fa-check"></i></button>
+                                    <button class="action-icon-btn reject" title="Recusar Cadastro"><i class="fa-solid fa-xmark"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Marcos Souza</strong> <span style="color: var(--text-muted);">(Mat: 3120-4)</span></td>
+                                <td>Subestação Tinguá</td>
+                                <td>Técnico de Saneamento</td>
+                                <td><span style="color: var(--tech-blue);">Focal Técnico</span></td>
+                                <td><span class="status-badge status-approved">Aprovado e Ativo</span></td>
+                                <td class="actions-cell">
+                                    <button class="action-icon-btn reject" title="Revogar Acesso"><i class="fa-solid fa-ban"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="panel-nucleos-comms" class="tech-panel">
+            <div class="grid-two-cols">
+                <div class="tech-card">
+                    <h3><i class="fa-solid fa-network-wired" style="color: var(--tech-green);"></i> Enviar Memorando Interno / Nota Técnica</h3>
+                    <form onsubmit="simulateInternalComm(event)">
+                        <div class="tech-form-group">
+                            <label>Núcleo de Origem</label>
+                            <input type="text" value="Geoprocessamento e Agrimensura" readonly>
+                        </div>
+                        <div class="tech-form-group">
+                            <label>Núcleo de Destino</label>
+                            <select id="commDestiny">
+                                <option value="aedes">Núcleo Técnico Aedes (Vetores)</option>
+                                <option value="recicla">Coordenação de Educação Ambiental (Recicla)</option>
+                                <option value="all">Todos os Núcleos DMA</option>
+                            </select>
+                        </div>
+                        <div class="tech-form-group">
+                            <label>Despacho / Instrução de Trabalho</label>
+                            <textarea id="commBody" rows="4" placeholder="Transmita dados brutos, links de servidores internos ou atualizações de normas..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-tech-primary" style="background-color: var(--tech-green);"><i class="fa-solid fa-share-nodes"></i> Protocolar Comunicação</button>
+                    </form>
+                </div>
+
+                <div class="tech-card">
+                    <h3><i class="fa-solid fa-inbox"></i> Inbox de Alinhamento DMA</h3>
+                    <div class="comms-history" id="internalCommInbox">
+                        <div class="comm-bubble" style="border-left-color: var(--tech-green);">
+                            <div class="comm-bubble-meta"><span>De: Coord. de Vetores</span><span>Hoje às 10:14</span></div>
+                            <strong>Alinhamento Técnico:</strong> Solicitamos repasse dos vetores de limites geográficos das novas subestações para inclusão no cronograma de vistorias do segundo trimestre.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Função simples para alternar entre os painéis restritos sem recarregar a página
+        function switchPanel(panelId) {
+            // Remove active de todos os botões da sidebar
+            document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
+            // Remove active de todos os painéis
+            document.querySelectorAll('.tech-panel').forEach(panel => panel.classList.remove('active'));
+            
+            // Ativa o painel correto
+            document.getElementById('panel-' + panelId).classList.add('active');
+            // Ativa o botão clicado
+            event.currentTarget.classList.add('active');
+
+            // Atualiza o título dinamicamente conforme a função
+            const titleMap = {
+                'feed-post': 'Gerenciador de Postagens Corporativas',
+                'logins-admin': 'Administração e Homologação de Logins',
+                'nucleos-comms': 'Canal de Comunicação Interdepartamental'
+            };
+            document.getElementById('panelTitle').textContent = titleMap[panelId];
+        }
+
+        function simulatePost(event) {
+            event.preventDefault();
+            alert("Sucesso! A postagem técnica foi processada e enviada para a fila de exibição pública do Explorar (feed.html).");
+            document.getElementById('postSubject').value = '';
+            document.getElementById('postBody').value = '';
+        }
+
+        function simulateInternalComm(event) {
+            event.preventDefault();
+            const destiny = document.getElementById('commDestiny').options[document.getElementById('commDestiny').selectedIndex].text;
+            const body = document.getElementById('commBody').value;
+            
+            const inbox = document.getElementById('internalCommInbox');
+            const newBubble = document.createElement('div');
+            newBubble.className = "comm-bubble";
+            newBubble.style.borderLeftColor = "var(--tech-green)";
+            newBubble.innerHTML = `
+                <div class="comm-bubble-meta"><span>Para: ${destiny}</span><span>Agora mesmo</span></div>
+                <strong>Memorando Interno:</strong> ${body}
+            `;
+            inbox.insertBefore(newBubble, inbox.firstChild);
+            
+            alert("Nota técnica protocolada e transmitida para o núcleo responsável.");
+            document.getElementById('commBody').value = '';
+        }
+    </script>
+</body>
+</html>
