@@ -9,7 +9,7 @@
         :root {
             /* Paleta Solar, Iluminada e Convidativa (Pública) */
             --bg-gradient: linear-gradient(135deg, #f7fee7 0%, #f0fdf4 50%, #ecfeff 100%);
-            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.85);
             --glass-border: rgba(255, 255, 255, 0.6);
             --text-main: #0f172a;
             --text-muted: #475569;
@@ -76,15 +76,15 @@
             border-radius: 4px;
         }
 
-        /* Container do Feed */
+        /* Container do Feed - Alargado ligeiramente para suportar o lado a lado de forma confortável */
         .feed-container {
-            max-width: 550px;
+            max-width: 750px;
             width: 100%;
             margin: 20px auto;
             padding: 0 16px;
         }
 
-        /* Filtros por Categoria (Abas Fixas que filtram a atividade na página) */
+        /* Filtros por Categoria */
         .filters-container {
             display: flex;
             gap: 8px;
@@ -118,7 +118,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        /* Card de Postagem Estilo Comunicação Integrada */
+        /* Card Base do Feed */
         .email-card {
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
@@ -128,11 +128,47 @@
             margin-bottom: 20px;
             padding: 20px;
             box-shadow: var(--shadow-light);
-            transition: transform 0.2s;
         }
 
+        /* Estrutura Split (Metade Vertical do Quadro para o Aedes) */
+        .split-layout {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        .split-col-image {
+            display: table-cell;
+            width: 45%;
+            vertical-align: top;
+            padding-right: 20px;
+        }
+
+        .split-col-text {
+            display: table-cell;
+            width: 55%;
+            vertical-align: top;
+        }
+
+        /* Contentores de Imagem Embebida */
+        .infographic-box {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .infographic-box img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Tipografia e Detalhes Internos */
         .email-header {
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         .email-subject-line {
@@ -150,7 +186,6 @@
             line-height: 1.4;
         }
 
-        /* Tags de Categoria Clean */
         .email-tag {
             font-size: 0.7rem;
             padding: 4px 10px;
@@ -178,31 +213,30 @@
             gap: 6px;
         }
 
-        /* Conteúdo Escrito */
         .email-body {
-            font-size: 0.9rem;
-            line-height: 1.6;
+            font-size: 0.88rem;
+            line-height: 1.55;
             color: #334155;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
-        /* Botão de Convite / Inclusão / Ação para o Usuário Público */
+        /* Caixa de Chamada de Ação */
         .action-banner-box {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.6);
             border: 1px dashed rgba(0,0,0,0.1);
             border-radius: 10px;
-            padding: 14px;
+            padding: 12px;
             margin-top: 10px;
         }
         
         .btn-invite-action {
             background: #ffffff;
             color: var(--text-main);
-            border: 1px solid rgba(0,0,0,0.1);
-            padding: 10px 16px;
+            border: 1px solid rgba(0,0,0,0.12);
+            padding: 10px 14px;
             border-radius: 8px;
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
@@ -216,7 +250,7 @@
             color: #ffffff;
         }
 
-        /* Anexo de Arquivo */
+        /* Anexos de Ficheiro */
         .email-file-attachment {
             background: rgba(255, 255, 255, 0.6);
             border: 1px solid rgba(0, 0, 0, 0.05);
@@ -227,10 +261,10 @@
             gap: 12px;
             font-size: 0.82rem;
             color: var(--text-main);
+            margin-top: 10px;
         }
         .email-file-attachment i { font-size: 1.3rem; }
 
-        /* Rodapé Social Inofensivo */
         .email-footer-actions {
             display: flex;
             justify-content: flex-end;
@@ -239,7 +273,7 @@
             color: var(--text-muted);
             border-top: 1px solid rgba(0, 0, 0, 0.04);
             padding-top: 12px;
-            margin-top: 16px;
+            margin-top: 14px;
         }
         .email-footer-actions span {
             cursor: pointer;
@@ -248,7 +282,7 @@
             gap: 6px;
         }
 
-        /* Bottom Nav Fixa e Translúcida */
+        /* Bottom Nav Fixa */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -263,7 +297,6 @@
             justify-content: space-around;
             align-items: center;
             z-index: 100;
-            box-shadow: 0 -4px 30px rgba(15, 23, 42, 0.02);
         }
 
         .nav-item {
@@ -278,6 +311,18 @@
         }
         .nav-item i { font-size: 1.25rem; }
         .nav-item.active { color: var(--accent-geo); font-weight: 600; }
+
+        /* Responsividade para Ecrãs Pequenos (Mobile) */
+        @media (max-width: 680px) {
+            .split-layout, .split-col-image, .split-col-text {
+                display: block;
+                width: 100%;
+                padding-right: 0;
+            }
+            .split-col-image {
+                margin-bottom: 16px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -300,31 +345,42 @@
 
         <div class="feed-group" data-category="aedes">
             <div class="email-card">
-                <div class="email-header">
-                    <div class="email-subject-line">
-                        <h2 class="email-subject">Programa de Rotina Ambiental: Emissão de Certificados e Alerta de Condicionantes</h2>
-                        <span class="email-tag tag-aedes">Aedes</span>
-                    </div>
-                    <div class="email-meta-line">
-                        <div class="email-sender">
-                            <i class="fa-solid fa-circle-info" style="color: var(--accent-aedes);"></i>
-                            De: <strong>Núcleo Técnico DMA</strong>
-                        </div>
-                        <div class="email-time">Há 5h</div>
-                    </div>
-                </div>
-                
-                <div class="email-body">
-                    Atenção gerências e equipes locais: Lembramos que as unidades operacionais da CEDAE que possuem <strong>Licença de Operação (LO)</strong>, ou estão em processo de obtenção, possuem condicionantes que exigem a eliminação de ambientes propícios à proliferação de vetores, principalmente do mosquito <em>Aedes aegypti</em>.
-                    <br><br>
-                    Para garantir conformidade, a plataforma emite <strong>Certificados Mensais de Inspeção</strong> que comprovam as varreduras semanais realizadas. Se sua unidade ainda não faz parte do mapa ativo, convidamos os focais indicados a realizarem o credenciamento técnico.
+                <div class="split-layout">
                     
-                    <div class="action-banner-box">
-                        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px;">Sua equipe possui um focal designado? Realize a identificação ou abra o formulário técnico para prestar as vistorias:</p>
-                        <a href="./aedes.html" class="btn-invite-action">
-                            <i class="fa-solid fa-user-plus"></i> Ir para Área de Vistorias / Cadastrar Focal
-                        </a>
+                    <div class="split-col-image">
+                        <div class="infographic-box">
+                            <img src="./assets/dengue_icon2.png" alt="Programa de Combate à Dengue - Passo a Passo">
+                        </div>
                     </div>
+                    
+                    <div class="split-col-text">
+                        <div class="email-header">
+                            <div class="email-subject-line">
+                                <h2 class="email-subject">Rotina Semanal: Condicionantes de LO e Emissão de Certificados</h2>
+                                <span class="email-tag tag-aedes">Aedes</span>
+                            </div>
+                            <div class="email-meta-line">
+                                <div class="email-sender">
+                                    <i class="fa-solid fa-circle-info" style="color: var(--accent-aedes);"></i>
+                                    De: <strong>Núcleo Técnico DMA</strong>
+                                </div>
+                                <div class="email-time">Agora</div>
+                            </div>
+                        </div>
+                        
+                        <div class="email-body">
+                            Atenção gerências locais: Relembramos que as unidades operacionais da CEDAE com <strong>Licença de Operação (LO)</strong> ativas ou em processo, possuem condicionantes legais obrigatórias. Estas exigem a eliminação sistemática de ambientes propícios à proliferação do mosquito <em>Aedes aegypti</em>.
+                            <br><br>
+                            O sistema agora emite <strong>Certificados Mensais</strong> atestando a regularidade das varreduras obrigatórias da sua subestação.
+                        </div>
+
+                        <div class="action-banner-box">
+                            <a href="./aedes.html" class="btn-invite-action">
+                                <i class="fa-solid fa-user-plus"></i> Aceder às Vistorias / Cadastrar Focal
+                            </a>
+                        </div>
+                    </div>
+                    
                 </div>
 
                 <div class="email-footer-actions">
@@ -427,12 +483,10 @@
 
     <script>
         function filterFeed(category) {
-            // Atualiza classe ativa nos bubbles
             const bubbles = document.querySelectorAll('.filter-bubble');
             bubbles.forEach(b => b.classList.remove('active'));
             event.currentTarget.classList.add('active');
 
-            // Filtra os blocos mantendo a ordem do arquivo intacta
             const groups = document.querySelectorAll('.feed-group');
             groups.forEach(g => {
                 if (category === 'all' || g.getAttribute('data-category') === category) {
