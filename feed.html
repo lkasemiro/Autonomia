@@ -7,14 +7,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* Paleta Solar, Iluminada e Convidativa (Pública) */
             --bg-gradient: linear-gradient(135deg, #f7fee7 0%, #f0fdf4 50%, #ecfeff 100%);
             --glass-bg: rgba(255, 255, 255, 0.85);
             --glass-border: rgba(255, 255, 255, 0.6);
             --text-main: #0f172a;
             --text-muted: #475569;
             
-            /* Cores de Destaque dos Módulos */
             --accent-aedes: #eab308;
             --accent-recicla: #16a34a;
             --accent-geo: #0284c7;
@@ -38,7 +36,6 @@
             padding-bottom: 90px;
         }
 
-        /* Topbar Limpa e Fluida */
         header {
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(16px);
@@ -51,7 +48,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.01);
         }
 
         .logo-feed {
@@ -63,9 +59,7 @@
             gap: 10px;
         }
 
-        .logo-feed i {
-            color: var(--accent-geo);
-        }
+        .logo-feed i { color: var(--accent-geo); }
 
         .logo-feed span {
             color: var(--text-muted);
@@ -76,7 +70,6 @@
             border-radius: 4px;
         }
 
-        /* Container do Feed - Alargado ligeiramente para suportar o lado a lado de forma confortável */
         .feed-container {
             max-width: 750px;
             width: 100%;
@@ -84,7 +77,6 @@
             padding: 0 16px;
         }
 
-        /* Filtros por Categoria */
         .filters-container {
             display: flex;
             gap: 8px;
@@ -109,16 +101,13 @@
             align-items: center;
             gap: 6px;
             box-shadow: var(--shadow-light);
-            transition: all 0.2s ease;
         }
         .filter-bubble.active {
             background: #ffffff;
             color: var(--text-main);
             border-color: var(--text-main);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        /* Card Base do Feed */
         .email-card {
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
@@ -130,7 +119,6 @@
             box-shadow: var(--shadow-light);
         }
 
-        /* Estrutura Split (Metade Vertical do Quadro para o Aedes) */
         .split-layout {
             display: table;
             width: 100%;
@@ -150,7 +138,6 @@
             vertical-align: top;
         }
 
-        /* Contentores de Imagem Embebida */
         .infographic-box {
             width: 100%;
             border-radius: 12px;
@@ -166,10 +153,7 @@
             display: block;
         }
 
-        /* Tipografia e Detalhes Internos */
-        .email-header {
-            margin-bottom: 12px;
-        }
+        .email-header { margin-bottom: 12px; }
 
         .email-subject-line {
             display: flex;
@@ -193,7 +177,6 @@
             font-weight: 600;
             text-transform: uppercase;
             flex-shrink: 0;
-            letter-spacing: 0.02em;
         }
         .tag-aedes { background: #fef9c3; color: #713f12; border: 1px solid #fef08a; }
         .tag-recicla { background: #dcfce7; color: #14532d; border: 1px solid #bbf7d0; }
@@ -207,12 +190,6 @@
             color: var(--text-muted);
         }
 
-        .email-sender {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
         .email-body {
             font-size: 0.88rem;
             line-height: 1.55;
@@ -220,7 +197,6 @@
             margin-bottom: 14px;
         }
 
-        /* Caixa de Chamada de Ação */
         .action-banner-box {
             background: rgba(255, 255, 255, 0.6);
             border: 1px dashed rgba(0,0,0,0.1);
@@ -237,20 +213,13 @@
             border-radius: 8px;
             font-weight: 600;
             font-size: 0.82rem;
-            cursor: pointer;
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            text-decoration: none;
             box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-            transition: all 0.2s ease;
-        }
-        .btn-invite-action:hover {
-            background: var(--text-main);
-            color: #ffffff;
         }
 
-        /* Anexos de Ficheiro */
         .email-file-attachment {
             background: rgba(255, 255, 255, 0.6);
             border: 1px solid rgba(0, 0, 0, 0.05);
@@ -260,10 +229,8 @@
             align-items: center;
             gap: 12px;
             font-size: 0.82rem;
-            color: var(--text-main);
             margin-top: 10px;
         }
-        .email-file-attachment i { font-size: 1.3rem; }
 
         .email-footer-actions {
             display: flex;
@@ -275,14 +242,8 @@
             padding-top: 12px;
             margin-top: 14px;
         }
-        .email-footer-actions span {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
 
-        /* Bottom Nav Fixa */
+        /* Bottom Nav Simplificada (Início, Explorar, Login) */
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -308,20 +269,14 @@
             text-decoration: none;
             font-weight: 500;
             gap: 4px;
+            width: 33.33%;
         }
         .nav-item i { font-size: 1.25rem; }
         .nav-item.active { color: var(--accent-geo); font-weight: 600; }
 
-        /* Responsividade para Ecrãs Pequenos (Mobile) */
         @media (max-width: 680px) {
-            .split-layout, .split-col-image, .split-col-text {
-                display: block;
-                width: 100%;
-                padding-right: 0;
-            }
-            .split-col-image {
-                margin-bottom: 16px;
-            }
+            .split-layout, .split-col-image, .split-col-text { display: block; width: 100%; padding-right: 0; }
+            .split-col-image { margin-bottom: 16px; }
         }
     </style>
 </head>
@@ -331,7 +286,6 @@
         <div class="logo-feed">
             <i class="fa-solid fa-compass"></i> Explorar <span>DMA</span>
         </div>
-        <i class="fa-solid fa-sliders" style="font-size: 1.1rem; cursor: pointer; color: var(--text-muted);"></i>
     </header>
 
     <main class="feed-container">
@@ -346,46 +300,27 @@
         <div class="feed-group" data-category="aedes">
             <div class="email-card">
                 <div class="split-layout">
-                    
                     <div class="split-col-image">
                         <div class="infographic-box">
-                            <img src="./assets/dengue_icon2.png" alt="Programa de Combate à Dengue - Passo a Passo">
+                            <img src="./assets/dengue_icon2.png" alt="Programa de Combate à Dengue">
                         </div>
                     </div>
-                    
                     <div class="split-col-text">
                         <div class="email-header">
                             <div class="email-subject-line">
                                 <h2 class="email-subject">Rotina Semanal: Condicionantes de LO e Emissão de Certificados</h2>
                                 <span class="email-tag tag-aedes">Aedes</span>
                             </div>
-                            <div class="email-meta-line">
-                                <div class="email-sender">
-                                    <i class="fa-solid fa-circle-info" style="color: var(--accent-aedes);"></i>
-                                    De: <strong>Núcleo Técnico DMA</strong>
-                                </div>
-                                <div class="email-time">Agora</div>
-                            </div>
                         </div>
-                        
                         <div class="email-body">
-                            Atenção gerências locais: Relembramos que as unidades operacionais da CEDAE com <strong>Licença de Operação (LO)</strong> ativas ou em processo, possuem condicionantes legais obrigatórias. Estas exigem a eliminação sistemática de ambientes propícios à proliferação do mosquito <em>Aedes aegypti</em>.
-                            <br><br>
-                            O sistema agora emite <strong>Certificados Mensais</strong> atestando a regularidade das varreduras obrigatórias da sua subestação.
+                            Atenção gerências locais: Relembramos que as unidades operacionais da CEDAE com Licença de Operação (LO) ativas ou em processo possuem condicionantes legais obrigatórias de eliminação de vetores.
                         </div>
-
                         <div class="action-banner-box">
-                            <a href="./aedes.html" class="btn-invite-action">
-                                <i class="fa-solid fa-user-plus"></i> Aceder às Vistorias / Cadastrar Focal
+                            <a href="./aedes-publico.html" class="btn-invite-action">
+                                <i class="fa-solid fa-chart-line"></i> Conheça o Projeto / Saiba Mais
                             </a>
                         </div>
                     </div>
-                    
-                </div>
-
-                <div class="email-footer-actions">
-                    <span><i class="fa-solid fa-share-nodes"></i> Compartilhar</span>
-                    <span><i class="fa-solid fa-star"></i> Destacar</span>
                 </div>
             </div>
         </div>
@@ -397,30 +332,13 @@
                         <h2 class="email-subject">Relatório Mensal de Pesagem e Indicadores ESG - Tinguá</h2>
                         <span class="email-tag tag-recicla">Recicla</span>
                     </div>
-                    <div class="email-meta-line">
-                        <div class="email-sender">
-                            <i class="fa-solid fa-leaf" style="color: var(--accent-recicla);"></i>
-                            De: <strong>Educação Ambiental</strong>
-                        </div>
-                        <div class="email-time">Ontem</div>
-                    </div>
                 </div>
-                
                 <div class="email-body">
-                    Compartilhamos com toda a comunidade interna os dados consolidados do projeto CEDAE Recicla executado na Reserva Biológica do Tinguá. Batemos as metas institucionais de destinação adequada de resíduos sólidos recicláveis da unidade corporativa este mês, fortalecendo nossa agenda sustentável.
+                    Compartilhamos com toda a comunidade interna os dados consolidados do projeto CEDAE Recicla executado na Reserva Biológica do Tinguá.
                 </div>
-
                 <div class="email-file-attachment">
                     <i class="fa-regular fa-file-excel" style="color: var(--accent-recicla);"></i>
-                    <div>
-                        <strong>indicadores_tingua_recicla.xlsx</strong>
-                        <div style="font-size: 0.72rem; color: var(--text-muted);">Planilha pública de dados gerais ESG</div>
-                    </div>
-                </div>
-
-                <div class="email-footer-actions">
-                    <span><i class="fa-solid fa-share-nodes"></i> Compartilhar</span>
-                    <span><i class="fa-solid fa-star"></i> Destacar</span>
+                    <div><strong>indicadores_tingua_recicla.xlsx</strong></div>
                 </div>
             </div>
         </div>
@@ -432,30 +350,9 @@
                         <h2 class="email-subject">Atualização de Camadas Espaciais: Canal Imunana (2026)</h2>
                         <span class="email-tag tag-geo">Geo</span>
                     </div>
-                    <div class="email-meta-line">
-                        <div class="email-sender">
-                            <i class="fa-solid fa-earth-americas" style="color: var(--accent-geo);"></i>
-                            De: <strong>Eng. de Agrimensura (Luisa)</strong>
-                        </div>
-                        <div class="email-time">Há 2d</div>
-                    </div>
                 </div>
-                
                 <div class="email-body">
-                    Concluímos com sucesso o mapeamento e o processamento da análise espacial temporal do Canal Imunana. Atualizamos as curvas de nível de altimetria e o vetor de uso do solo para o relatório consolidado do trimestre. O arquivo georreferenciado está disponível para consulta das equipes de planejamento.
-                </div>
-
-                <div class="email-file-attachment">
-                    <i class="fa-solid fa-file-archived" style="color: var(--accent-geo);"></i>
-                    <div>
-                        <strong>mapa_imunana_2026.qgs</strong>
-                        <div style="font-size: 0.72rem; color: var(--text-muted);">Projeto QGIS / Vetores compactados</div>
-                    </div>
-                </div>
-
-                <div class="email-footer-actions">
-                    <span><i class="fa-solid fa-share-nodes"></i> Compartilhar</span>
-                    <span><i class="fa-solid fa-star"></i> Destacar</span>
+                    Concluímos com sucesso o mapeamento e o processamento da análise espacial temporal do Canal Imunana.
                 </div>
             </div>
         </div>
@@ -464,20 +361,13 @@
 
     <nav class="bottom-nav">
         <a href="./index.html" class="nav-item">
-            <i class="fa-solid fa-house"></i>
-            Início
+            <i class="fa-solid fa-house"></i> Início
         </a>
         <a href="#" class="nav-item active">
-            <i class="fa-solid fa-compass"></i>
-            Explorar
+            <i class="fa-solid fa-compass"></i> Explorar
         </a>
-        <a href="./aedes.html" class="nav-item">
-            <i class="fa-solid fa-mosquito"></i>
-            Aedes
-        </a>
-        <a href="./aedes-publico.html" class="nav-item">
-            <i class="fa-solid fa-chart-line"></i>
-            Dados
+        <a href="./login.html" class="nav-item">
+            <i class="fa-solid fa-lock"></i> Login
         </a>
     </nav>
 
