@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal-DMA | Feed Ambiental</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --surface: #0077b6; /* Azul Claro da Superfície */
+            --twilight: #0096c7; /* Azul Intermediário */
+            --ocean-deep: #03045e; /* O Azul Profundo */
+            --dark-bg: #0b132b; /* Fundo do oceano escuro */
+            --card-bg: rgba(28, 37, 65, 0.65); /* Efeito vidro escuro */
+            --text-light: #f1faee;
+            --text-gray: #a8dadc;
+            --accent-green: #4ade80;
+            --accent-blue: #38bdf8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(180deg, #005f73 0%, var(--dark-bg) 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding-bottom: 80px; /* Espaço para o menu debaixo no celular */
+        }
+
+        /* Header do Feed */
+        header {
+            background: rgba(11, 19, 43, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-feed {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-feed span {
+            color: var(--text-light);
+            font-weight: 400;
+            font-size: 0.9rem;
+        }
+
+        /* Container do Feed */
+        .feed-container {
+            max-width: 500px;
+            width: 100%;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        /* Stories/Filtros Rápidos */
+        .filters-container {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            scrollbar-width: none; /* Esconde barra no Firefox */
+        }
+        .filters-container::-webkit-scrollbar {
+            display: none; /* Esconde barra no Chrome/Safari */
+        }
+
+        .filter-bubble {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+        }
+        .filter-bubble.active {
+            background: var(--accent-blue);
+            color: var(--ocean-deep);
+            font-weight: 600;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        /* Card de Post (Estilo Insta Subaquático) */
+        .post-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .post-header {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50px;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--dark-bg);
+        }
+
+        .post-meta h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .post-meta span {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+        }
+
+        .post-tag {
+            margin-left: auto;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .tag-aedes { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .tag-recicla { background: rgba(74, 222, 128, 0.2); color: #4ade80; }
+        .tag-geo { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
+
+        .post-content {
+            padding: 0 15px 15px 15px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+        }
+
+        /* Área de Mídia/Arquivo do Post */
+        .post-media-box {
+            background: rgba(0,0,0,0.3);
+            width: 100%;
+            aspect-ratio: 16/9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+        .post-media-box i {
+            font-size: 2.5rem;
+            color: var(--accent-blue);
+        }
+
+        .post-actions {
+            padding: 12px 15px;
+            display: flex;
+            gap: 20px;
+            font-size: 1.2rem;
+            border-top: 1px solid rgba(255,255,255,0.02);
+        }
+
+        .post-actions i {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .post-actions i:hover {
+            color: var(--accent-blue);
+        }
+
+        /* Barra de Navegação de Baixo (Estilo App de Celular) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(11, 19, 43, 0.95);
+            backdrop-filter: blur(15px);
+            height: 65px;
+            border-top: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-gray);
+            font-size: 0.75rem;
+            text-decoration: none;
+            gap: 4px;
+        }
+        .nav-item i { font-size: 1.3rem; }
+        .nav-item.active { color: var(--accent-blue); }
+
+        .btn-plus-center {
+            background: linear-gradient(135deg, var(--accent-blue), var(--surface));
+            width: 50px;
+            height: 50px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--ocean-deep) !important;
+            font-size: 1.4rem !important;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+            transform: translateY(-10px);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-feed">
+            <i class="fa-solid fa-droplet"></i> Portal-DMA <span>| Linha do Tempo</span>
+        </div>
+        <i class="fa-regular fa-bell" style="font-size: 1.2rem; cursor: pointer;"></i>
+    </header>
+
+    <main class="feed-container">
+        
+        <div class="filters-container">
+            <div class="filter-bubble active"><i class="fa-solid fa-globe"></i> Tudo</div>
+            <div class="filter-bubble"><i class="fa-solid fa-mosquito"></i> Aedes</div>
+            <div class="filter-bubble"><i class="fa-solid fa-recycle"></i> Recicla</div>
+            <div class="filter-bubble"><i class="fa-solid fa-map-location-dot"></i> Geoprocessamento</div>
+        </div>
+
+        <div class="post-card">
+            <div class="post-header">
+                <div class="post-avatar">Lu</div>
+                <div class="post-meta">
+                    <h3>Núcleo de Geoprocessamento</h3>
+                    <span>Há 2 horas • Público Geral</span>
+                </div>
+                <div class="post-tag tag-geo">Geo</div>
+            </div>
+            <div class="post-content">
+                Mapeamento de análise temporal e espacial concluído para o Canal Imunana. Atualizamos as camadas de altimetria e uso do solo para o relatório trimestral. Arquivo shapefile disponível para download do corpo técnico.
+            </div>
+            <div class="post-media-box">
+                <i class="fa-solid fa-map-marked-alt"></i>
+                <span>mapa_imunana_2026.qgs (PDF/Shapefile)</span>
+            </div>
+            <div class="post-actions">
+                <i class="fa-regular fa-heart"></i>
+                <i class="fa-regular fa-comment"></i>
+                <i class="fa-regular fa-bookmark" style="margin-left: auto;"></i>
+            </div>
+        </div>
+
+        <div class="post-card">
+            <div class="post-header">
+                <div class="post-avatar" style="background: #f87171;">TA</div>
+                <div class="post-meta">
+                    <h3>Técnicos Ambientais</h3>
+                    <span>Há 5 horas • Geral</span>
+                </div>
+                <div class="post-tag tag-aedes">Aedes</div>
+            </div>
+            <div class="post-content">
+                Atenção focais! Alerta de chuvas intensas para o fim de semana nas subestações. Reforcem a grade de vistorias nas calhas e áreas abertas utilizando os inputs controlados do app para evitar água parada.
+            </div>
+            <div class="post-media-box" style="aspect-ratio: auto; padding: 40px 0;">
+                <i class="fa-solid fa-triangle-exclamation" style="color: #ef4444;"></i>
+                <span style="color: #f87171; font-weight: 600;">Comunicado de Alerta Estratégico</span>
+            </div>
+            <div class="post-actions">
+                <i class="fa-regular fa-heart"></i>
+                <i class="fa-regular fa-comment"></i>
+                <i class="fa-regular fa-bookmark" style="margin-left: auto;"></i>
+            </div>
+        </div>
+
+        <div class="post-card">
+            <div class="post-header">
+                <div class="post-avatar" style="background: #4ade80;">EA</div>
+                <div class="post-meta">
+                    <h3>Educação Ambiental</h3>
+                    <span>Ontem • Geral</span>
+                </div>
+                <div class="post-tag tag-recicla">Recicla</div>
+            </div>
+            <div class="post-content">
+                Consolidado do projeto CEDAE Recicla na Reserva do Tinguá! Graças ao engajamento dos colaboradores, atingimos a meta de destinação correta de resíduos este mês. Confiram a planilha de pesagem e indicadores de ESG.
+            </div>
+            <div class="post-media-box">
+                <i class="fa-regular fa-file-excel" style="color: #4ade80;"></i>
+                <span>indicadores_tingua_recicla.xlsx</span>
+            </div>
+            <div class="post-actions">
+                <i class="fa-regular fa-heart"></i>
+                <i class="fa-regular fa-comment"></i>
+                <i class="fa-regular fa-bookmark" style="margin-left: auto;"></i>
+            </div>
+        </div>
+
+    </main>
+
+    <nav class="bottom-nav">
+        <a href="./index.html" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            Início
+        </a>
+        <a href="#" class="nav-item active">
+            <i class="fa-solid fa-compass"></i>
+            Explorar
+        </a>
+        <a href="#" class="nav-item btn-plus-center" onclick="alert('Mergulhe mais fundo: Faça login ou cadastre-se para criar uma publicação com controle de privacidade.')">
+            <i class="fa-solid fa-plus"></i>
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fa-solid fa-chart-line"></i>
+            Dados
+        </a>
+        <a href="#" class="nav-item">
+            <i class="fa-solid fa-user"></i>
+            Perfil
+        </a>
+    </nav>
+
+</body>
+</html>
