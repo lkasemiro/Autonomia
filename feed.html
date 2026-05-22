@@ -630,52 +630,48 @@
         </aside>
 
         <!-- ── FEED PRINCIPAL ──────────────────────────── -->
-        <main class="feed-main">
+<main class="feed-main">
 
-            <!-- Filtros -->
-            <div class="filters-bar">
-                <div class="filter-pill active" onclick="filterFeed(this, 'all')">
-                    <i class="fa-solid fa-envelope-open-text"></i> Todas
-                </div>
-                <div class="filter-pill" onclick="filterFeed(this, 'aedes')">
-                    <i class="fa-solid fa-mosquito"></i> Módulo Aedes
-                </div>
-                <div class="filter-pill" onclick="filterFeed(this, 'recicla')">
-                    <i class="fa-solid fa-recycle"></i> Recicla
-                </div>
-                <div class="filter-pill" onclick="filterFeed(this, 'geo')">
-                    <i class="fa-solid fa-map"></i> Geoprocessamento
+    <!-- Filtros -->
+    <div class="filters-bar">
+        <div class="filter-pill active" onclick="filterFeed(this, 'all')">
+            <i class="fa-solid fa-envelope-open-text"></i> Todas
+        </div>
+        <div class="filter-pill" onclick="filterFeed(this, 'aedes')">
+            <i class="fa-solid fa-mosquito"></i> Módulo Aedes
+        </div>
+        <div class="filter-pill" onclick="filterFeed(this, 'recicla')">
+            <i class="fa-solid fa-recycle"></i> Recicla
+        </div>
+        <div class="filter-pill" onclick="filterFeed(this, 'geo')">
+            <i class="fa-solid fa-map"></i> Geoprocessamento
+        </div>
+    </div>
+
+    <!-- ── CARD 1 — Aedes (com imagem lateral) ─── -->
+    <div class="pub-card" data-category="aedes">
+        <div class="pub-card-split">
+            <div class="pub-image-col">
+                <img src="./assets/dengue_icon2.png" alt="Programa de Combate à Dengue">
+            </div>
+            <div class="pub-content-col">
+                <span class="pub-tag tag-aedes">Aedes</span>
+                <h2 class="pub-title">Rotina Semanal: Condicionantes de LO e Emissão de Certificados</h2>
+                <p class="pub-body">
+                    Atenção gerências locais: unidades operacionais da CEDAE com Licença de Operação ativas ou em processo possuem condicionantes legais obrigatórias de eliminação de vetores.
+                </p>
+                <div>
+                    <a href="./aedes-publico.html" class="pub-action">
+                        <i class="fa-solid fa-arrow-right"></i> Saiba mais
+                    </a>
                 </div>
             </div>
-
-            <!-- ── CARD 1 — Aedes (com imagem lateral) ─── -->
-            <div class="pub-card" data-category="aedes">
-                <div class="pub-card-split">
-                    <div class="pub-image-col">
-                        <!-- Troque por <img src="./assets/dengue_icon2.png" alt="..."> quando tiver o asset -->
-                        <div class="pub-img-placeholder pub-img-aedes" style="min-height:180px;">
-                            <i class="fa-solid fa-mosquito" style="color:#d97706; opacity:0.4;"></i>
-                        </div>
-                    </div>
-                    <div class="pub-content-col">
-                        <span class="pub-tag tag-aedes">Aedes</span>
-                        <h2 class="pub-title">Rotina Semanal: Condicionantes de LO e Emissão de Certificados</h2>
-                        <p class="pub-body">
-                            Atenção gerências locais: unidades operacionais da CEDAE com Licença de Operação ativas ou em processo possuem condicionantes legais obrigatórias de eliminação de vetores.
-                        </p>
-                        <div>
-                            <a href="./aedes-publico.html" class="pub-action">
-                                <i class="fa-solid fa-arrow-right"></i> Saiba mais
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="pub-card-footer">
-                    <span class="pub-meta"><i class="fa-regular fa-calendar"></i> Jun 2026</span>
-                    <span class="pub-meta"><i class="fa-regular fa-eye"></i> Público</span>
-                </div>
-            </div>
-
+        </div>
+        <div class="pub-card-footer">
+            <span class="pub-meta"><i class="fa-regular fa-calendar"></i> Jun 2026</span>
+            <span class="pub-meta"><i class="fa-regular fa-eye"></i> Público</span>
+        </div>
+    </div>
             <!-- ── CARD 2 — Recicla (com anexo) ──────────── -->
             <div class="pub-card" data-category="recicla">
                 <div class="pub-card-simple">
