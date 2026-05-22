@@ -11,210 +11,502 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
     <style>
+        /* ── VARIÁVEIS ─────────────────────────────────────── */
         :root {
-            --primary: #0077b6; /* Azul Superfície */
-            --secondary: #2a9d8f; /* Verde Sustentabilidade */
-            --abyss: #03045e; /* O Azul Mais Profundo (VIP/Admin) */
-            --dark: #1d3557;
-            --light: #f8f9fa;
-            --gray: #6c757d;
+            --primary:   #0077b6;
+            --secondary: #2a9d8f;
+            --abyss:     #03045e;
+            --dark:      #0d3b5e;
+            --gray:      #4a6a80;
+            --light:     #f0f9ff;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
-            color: var(--dark);
+            font-family: 'DM Sans', 'Segoe UI', sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            position: relative;
+            overflow-x: hidden;
+
+            /* Gradiente superfície → profundidade */
+            background: linear-gradient(
+                180deg,
+                #fffbea  0%,   /* luz solar */
+                #e0f5ff 16%,   /* reflexo na água */
+                #cceeff 34%,   /* superfície iluminada */
+                #b8e4ff 50%,   /* sub-superfície */
+                #90cdf4 65%,   /* zona intermediária */
+                #5fa8d3 80%,   /* profundidade */
+                #2b7db5 92%,   /* abismo começa */
+                #03045e 100%   /* abismo total */
+            );
         }
 
+        /* ── LUZ SOLAR ─────────────────────────────────────── */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 700px;
+            height: 350px;
+            background: radial-gradient(
+                ellipse at 50% 0%,
+                rgba(255, 230, 80, 0.2) 0%,
+                rgba(186, 230, 255, 0.12) 45%,
+                transparent 70%
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── REFLEXO CÁUSTICO (luz quebrada na água) ────────── */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(ellipse 80px 22px at 18% 18%, rgba(255,255,255,0.22) 0%, transparent 100%),
+                radial-gradient(ellipse 55px 16px at 70% 12%, rgba(255,255,255,0.18) 0%, transparent 100%),
+                radial-gradient(ellipse 100px 28px at 85% 32%, rgba(255,255,255,0.14) 0%, transparent 100%),
+                radial-gradient(ellipse 65px 20px at 40% 42%, rgba(255,255,255,0.10) 0%, transparent 100%),
+                radial-gradient(ellipse 45px 14px at 60% 58%, rgba(255,255,255,0.08) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
+            animation: caustics 9s ease-in-out infinite alternate;
+        }
+
+        @keyframes caustics {
+            0%   { transform: translateX(0)   scaleY(1);    opacity: 1; }
+            100% { transform: translateX(10px) scaleY(1.05); opacity: 0.8; }
+        }
+
+        /* ── SHIMMER DE SUPERFÍCIE ──────────────────────────── */
+        .water-shimmer {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(56,182,255,0.5) 20%,
+                rgba(255,255,255,0.95) 40%,
+                rgba(56,182,255,0.6) 60%,
+                rgba(186,230,255,0.4) 80%,
+                transparent 100%
+            );
+            z-index: 100;
+            animation: shimmer 5s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; transform: scaleX(0.94); }
+            50%       { opacity: 1;   transform: scaleX(1.03); }
+        }
+
+        /* ── HEADER ─────────────────────────────────────────── */
         header {
-            padding: 20px;
+            position: relative;
+            z-index: 10;
+            padding: 20px 24px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
-            width: 100%;
+            max-width: 680px;
             margin: 0 auto;
+            width: 100%;
         }
 
         .logo {
-            font-weight: 700;
-            font-size: 1.4rem;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
             color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            letter-spacing: -0.02em;
+            text-decoration: none;
         }
 
         .logo span {
             color: var(--secondary);
         }
 
-        .welcome-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            max-width: 600px;
-            width: 90%;
-            margin: 40px auto;
-            padding: 40px 30px;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-            border: 1px solid rgba(255,255,255,0.5);
-            text-align: center;
-        }
-
-        .badge-semana {
-            background: var(--secondary);
-            color: white;
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 20px;
+        .header-tag {
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: rgba(0, 80, 130, 0.5);
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            animation: pulse 2s infinite;
         }
 
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            color: var(--dark);
-            line-height: 1.2;
+        /* ── MAIN ────────────────────────────────────────────── */
+        main {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            max-width: 680px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 1.25rem;
         }
 
-        p.subtitle {
-            font-size: 1.1rem;
-            color: var(--gray);
-            margin-bottom: 35px;
-            line-height: 1.6;
+        /* ── WELCOME CARD ────────────────────────────────────── */
+        .welcome-card {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.88);
+            border-radius: 24px;
+            padding: 36px 28px 32px;
+            margin-top: 2rem;
+            text-align: center;
+            box-shadow:
+                0 2px 0 rgba(255,255,255,0.95) inset,
+                0 24px 64px rgba(0, 100, 180, 0.1),
+                0 4px 20px rgba(0, 119, 182, 0.08);
         }
 
-        /* Botão com transição para o abismo */
-        .btn-enter {
-            background: linear-gradient(135deg, var(--primary) 0%, #0096c7 100%);
-            color: white;
-            padding: 16px 32px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-decoration: none;
+        /* Badge */
+        .badge-semana {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 10px 20px rgba(0, 119, 182, 0.25);
-            transition: all 0.4s ease;
-        }
-
-        .btn-enter:hover {
-            background: linear-gradient(135deg, #005f73 0%, var(--abyss) 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 25px rgba(3, 4, 94, 0.35);
-        }
-
-        .profiles-title {
-            margin-top: 40px;
-            font-size: 0.9rem;
+            gap: 7px;
+            background: rgba(42, 157, 143, 0.1);
+            border: 1px solid rgba(42, 157, 143, 0.35);
+            color: #1a7a6e;
+            font-size: 0.73rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--gray);
-            letter-spacing: 1px;
-            margin-bottom: 15px;
+            padding: 5px 14px;
+            border-radius: 100px;
+            margin-bottom: 1.6rem;
         }
 
-        .profiles-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+        /* Eyebrow */
+        .hero-eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(0, 80, 130, 0.38);
+            margin-bottom: 10px;
         }
 
-        .profile-item {
-            background: white;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 500;
+        /* Título */
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 800;
+            line-height: 1.1;
             color: var(--dark);
-            border: 1px solid #e2e8f0;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.3rem;
         }
 
-        .profile-item i {
-            display: block;
-            font-size: 1.2rem;
-            margin-bottom: 6px;
+        h1 .accent-green { color: var(--secondary); }
+        h1 .accent-blue  { color: var(--primary);   }
+
+        /* Onda decorativa */
+        .wave-divider {
+            margin: 1.2rem auto;
+            width: 64px;
+            height: 13px;
+        }
+
+        /* Subtítulo */
+        p.subtitle {
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            font-weight: 300;
+            max-width: 420px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        p.subtitle strong {
+            font-weight: 500;
             color: var(--primary);
         }
 
-        footer {
-            padding: 20px;
+        /* Botão */
+        .btn-enter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary) 0%, #0096c7 100%);
+            color: white;
+            font-family: 'Syne', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            padding: 15px 28px;
+            border-radius: 100px;
+            text-decoration: none;
+            width: 100%;
+            box-shadow:
+                0 8px 24px rgba(0, 119, 182, 0.28),
+                0 2px 6px rgba(0, 119, 182, 0.18);
+            transition: all 0.35s ease;
+        }
+
+        .btn-enter:hover {
+            background: linear-gradient(135deg, #005f92 0%, var(--abyss) 100%);
+            box-shadow: 0 14px 36px rgba(3, 4, 94, 0.38);
+            transform: translateY(-2px);
+        }
+
+        .btn-icon {
+            width: 22px; height: 22px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        /* ── PROFUNDIDADE ────────────────────────────────────── */
+        .depth-section {
+            position: relative;
+            z-index: 10;
+            margin-top: 1.4rem;
+            padding-bottom: 1rem;
+        }
+
+        .depth-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: rgba(0, 50, 110, 0.45);
             text-align: center;
-            font-size: 0.85rem;
-            color: var(--gray);
+            margin-bottom: 10px;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        .depth-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
         }
 
-        @media (max-width: 480px) {
+        .depth-card {
+            border-radius: 16px;
+            padding: 14px 8px 12px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            border: 1px solid rgba(255, 255, 255, 0.65);
+        }
+
+        .depth-card:hover { transform: translateY(-3px); }
+
+        /* Superfície */
+        .depth-card.surface {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 18px rgba(0, 180, 216, 0.13);
+        }
+
+        /* Intermediária */
+        .depth-card.mid {
+            background: rgba(0, 119, 182, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 18px rgba(0, 119, 182, 0.16);
+        }
+
+        /* Abismo */
+        .depth-card.abyss {
+            background: rgba(3, 4, 94, 0.78);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 18px rgba(3, 4, 94, 0.32);
+        }
+
+        /* Barra de profundidade no topo */
+        .depth-indicator {
+            position: absolute;
+            left: 0; right: 0; top: 0;
+            height: 3px;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .surface .depth-indicator { background: #00b4d8; }
+        .mid     .depth-indicator { background: #0077b6; }
+        .abyss   .depth-indicator { background: linear-gradient(90deg, #4361ee, #03045e); }
+
+        /* Ícone */
+        .depth-icon-wrap {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .surface .depth-icon-wrap { background: rgba(0, 180, 216, 0.13); }
+        .mid     .depth-icon-wrap { background: rgba(0, 119, 182, 0.15); }
+        .abyss   .depth-icon-wrap { background: rgba(255, 255, 255, 0.1); }
+
+        /* Nomes */
+        .depth-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.73rem;
+            font-weight: 700;
+            line-height: 1.3;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .surface .depth-name { color: #005f92; }
+        .mid     .depth-name { color: #0d3b5e; }
+        .abyss   .depth-name { color: rgba(255, 255, 255, 0.92); }
+
+        .depth-sub {
+            font-size: 0.64rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            display: block;
+        }
+
+        .surface .depth-sub { color: rgba(0,  80, 130, 0.45); }
+        .mid     .depth-sub { color: rgba(0,  40, 100, 0.45); }
+        .abyss   .depth-sub { color: rgba(255,255,255, 0.35); }
+
+        /* ── FOOTER ──────────────────────────────────────────── */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 1.6rem 1rem 2rem;
+            font-size: 0.73rem;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.03em;
+        }
+
+        /* ── RESPONSIVO ──────────────────────────────────────── */
+        @media (max-width: 420px) {
             h1 { font-size: 1.8rem; }
-            .profiles-grid { grid-template-columns: 1fr; }
-            .welcome-card { padding: 30px 20px; }
+
+            .welcome-card { padding: 28px 20px 24px; }
+
+            .depth-card { padding: 12px 6px 10px; }
+
+            .depth-name { font-size: 0.68rem; }
+        }
+
+        @media (min-width: 600px) {
+            h1 { font-size: 2.4rem; }
+            .welcome-card { padding: 44px 40px 40px; }
         }
     </style>
 </head>
 <body>
 
+    <div class="water-shimmer" aria-hidden="true"></div>
+
     <header>
-        <div class="logo">
-            <i class="fa-solid fa-droplet"></i> Portal<span>DMA</span>
-        </div>
-        <div style="font-size: 0.9rem; color: var(--gray); font-weight: 500;">CEDAE</div>
+        <a href="." class="logo">
+            <i class="fa-solid fa-droplet" aria-hidden="true"></i> Portal<span>DMA</span>
+        </a>
+        <span class="header-tag">CEDAE</span>
     </header>
 
     <main>
         <div class="welcome-card">
+
             <div class="badge-semana">
-                <i class="fa-solid fa-leaf"></i> Especial Semana do Meio Ambiente
+                <i class="fa-solid fa-leaf" aria-hidden="true"></i>
+                Especial Semana do Meio Ambiente
             </div>
-            
-            <h1>Você é o site. <br>Você vive a sustentabilidade.</h1>
-            
+
+            <div class="hero-eyebrow">CEDAE &middot; Meio Ambiente &middot; 2026</div>
+
+            <h1>
+                Na <span class="accent-green">superfície</span>,<br>
+                a luz. No fundo,<br>
+                os <span class="accent-blue">dados</span>.
+            </h1>
+
+            <!-- onda decorativa SVG -->
+            <div class="wave-divider" aria-hidden="true">
+                <svg viewBox="0 0 64 13" fill="none" xmlns="http://www.w3.org/2000/svg" width="64" height="13">
+                    <path d="M0 6.5 Q8 0 16 6.5 Q24 13 32 6.5 Q40 0 48 6.5 Q56 13 64 6.5"
+                          stroke="#0096c7" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.55"/>
+                </svg>
+            </div>
+
             <p class="subtitle">
-                Bem-vindo à nova plataforma de inteligência e engajamento ambiental da CEDAE. Um espaço dinâmico de autonomia, validação e monitoramento de dados feito por nós, para nós.
+                Plataforma de <strong>inteligência e engajamento ambiental</strong> da CEDAE —
+                um espaço dinâmico onde a equipe publica, valida e monitora dados com total autonomia.
+                Feito por nós, para nós.
             </p>
 
             <a href="./feed.html" class="btn-enter">
-                Mergulhar no Sistema <i class="fa-solid fa-arrow-down"></i>
+                Mergulhar no Sistema
+                <span class="btn-icon" aria-hidden="true">↓</span>
             </a>
 
-            <div class="profiles-title">Níveis de Profundidade dos Dados</div>
-            <div class="profiles-grid">
-                <div class="profile-item" style="border-bottom: 3px solid #00b4d8;">
-                    <i class="fa-solid fa-users" style="color: #00b4d8;"></i>
-                    Superfície<br><span style="font-size:0.7rem; color:var(--gray)">Geral</span>
+        </div>
+
+        <!-- Níveis de profundidade fora do card, com o azul já mais profundo ao fundo -->
+        <div class="depth-section">
+            <div class="depth-label">Níveis de Profundidade dos Dados</div>
+
+            <div class="depth-cards">
+
+                <div class="depth-card surface">
+                    <div class="depth-indicator" aria-hidden="true"></div>
+                    <div class="depth-icon-wrap">
+                        <i class="fa-solid fa-users" style="color:#00b4d8;" aria-hidden="true"></i>
+                    </div>
+                    <span class="depth-name">Superfície</span>
+                    <span class="depth-sub">Geral</span>
                 </div>
-                <div class="profile-item" style="border-bottom: 3px solid #0077b6;">
-                    <i class="fa-solid fa-helmet-safety" style="color: #0077b6;"></i>
-                    Zona Intermediária<br><span style="font-size:0.7rem; color:var(--gray)">Técnicos</span>
+
+                <div class="depth-card mid">
+                    <div class="depth-indicator" aria-hidden="true"></div>
+                    <div class="depth-icon-wrap">
+                        <i class="fa-solid fa-helmet-safety" style="color:#0077b6;" aria-hidden="true"></i>
+                    </div>
+                    <span class="depth-name">Zona Inter&shy;mediária</span>
+                    <span class="depth-sub">Técnicos</span>
                 </div>
-                <div class="profile-item" style="border-bottom: 3px solid var(--abyss);">
-                    <i class="fa-solid fa-user-tie" style="color: var(--abyss);"></i>
-                    Abismo dos Dados<br><span style="font-size:0.7rem; color:var(--gray)">Diretoria</span>
+
+                <div class="depth-card abyss">
+                    <div class="depth-indicator" aria-hidden="true"></div>
+                    <div class="depth-icon-wrap">
+                        <i class="fa-solid fa-user-tie" style="color:rgba(255,255,255,0.75);" aria-hidden="true"></i>
+                    </div>
+                    <span class="depth-name">Abismo dos Dados</span>
+                    <span class="depth-sub">Diretoria</span>
                 </div>
+
             </div>
         </div>
     </main>
@@ -227,10 +519,11 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('Service Worker ativo com sucesso!', reg.scope))
-                    .catch(err => console.log('Falha ao registrar o Service Worker:', err));
+                    .then(reg => console.log('Service Worker ativo!', reg.scope))
+                    .catch(err => console.log('Falha no Service Worker:', err));
             });
         }
     </script>
+
 </body>
 </html>
