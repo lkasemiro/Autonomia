@@ -7,826 +7,413 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* ── Abismo: continuação do gradiente index → feed → aqui ── */
             --bg-main:     #04091e;
             --bg-card:     #071330;
             --bg-input:    #0d1f4a;
             --border-tech: rgba(255, 255, 255, 0.07);
-            --border-glow: rgba(56, 182, 255, 0.30);
+            --border-glow: rgba(56, 182, 255, 0.25);
 
             --text-title: #e8f4ff;
-            --text-body:  #a8c8e8;
-            --text-muted: #5a80a8;
+            --text-body:  #a5b7db;
+            --text-muted: #6277a1;
 
-            --tech-blue:   #38b6ff;
-            --tech-green:  #10b981;
-            --tech-red:    #f43f5e;
-            --tech-orange: #f59e0b;
-
-            --sidebar-width: 260px;
+            --tech-blue:   #38bdf8;
+            --tech-green:  #34d399;
+            --tech-purple: #c084fc;
+            --tech-orange: #fbbf24;
         }
 
         * {
             margin: 0; padding: 0; box-sizing: border-box;
-            font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
         }
 
         body {
-            background: linear-gradient(160deg, #061528 0%, #041020 35%, #03081a 65%, #020510 100%);
-            background-attachment: fixed;
+            background-color: var(--bg-main);
             color: var(--text-body);
+            font-family: 'DM Sans', sans-serif;
             min-height: 100vh;
-            display: flex;
-            flex-direction: row;
+            padding-bottom: 60px;
         }
 
-        /* Bioluminescência sutil no fundo */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image:
-                radial-gradient(ellipse 300px 120px at 80% 15%, rgba(0,119,182,0.07) 0%, transparent 100%),
-                radial-gradient(ellipse 200px 80px  at 10% 60%, rgba(56,182,255,0.04) 0%, transparent 100%),
-                radial-gradient(ellipse 400px 100px at 50% 92%, rgba(3,4,94,0.12)    0%, transparent 100%);
-            pointer-events: none;
-            z-index: 0;
-            animation: biolum 14s ease-in-out infinite alternate;
-        }
-
-        @keyframes biolum {
-            0%   { opacity: 1;   }
-            100% { opacity: 0.5; }
-        }
-
-        /* Botão Hambúrguer Mobile */
-        .mobile-toggle {
-            display: none;
-            position: fixed;
-            top: 16px;
-            left: 16px;
-            z-index: 1000;
-            background: var(--tech-blue);
-            color: var(--bg-main);
-            border: none;
-            width: 42px;
-            height: 42px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.25rem;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-
-        /* Sidebar Técnica Lateral */
-        aside {
-            width: var(--sidebar-width);
-            background-color: var(--bg-card);
-            border-right: 1px solid var(--border-tech);
-            display: flex;
-            flex-direction: column;
-            padding: 24px 16px;
-            position: fixed;
-            height: 100vh;
-            left: 0;
-            top: 0;
-            transition: transform 0.3s ease;
-            z-index: 999;
-        }
-
-        .sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--text-title);
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 28px;
-            padding-left: 8px;
-        }
-        .sidebar-brand i { color: var(--tech-blue); }
-
-        .menu-label {
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            margin: 16px 0 8px 8px;
-            font-weight: 600;
-        }
-
-        .sidebar-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-body);
-            padding: 12px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            width: 100%;
-            font-size: 0.88rem;
-            font-weight: 500;
-            text-align: left;
-            transition: all 0.2s ease;
-        }
-        .sidebar-btn:hover {
-            background: rgba(255,255,255,0.04);
+        h1, h2, h3, .brand-title {
+            font-family: 'Syne', sans-serif;
             color: var(--text-title);
         }
-        .sidebar-btn.active {
-            background: rgba(56, 189, 248, 0.12);
-            color: var(--tech-blue);
-            font-weight: 600;
-        }
 
-        /* Container de Conteúdo Principal */
-        main {
-            margin-left: var(--sidebar-width);
-            flex: 1;
-            padding: 40px;
-            width: calc(100% - var(--sidebar-width));
-            min-width: 0;
-        }
-
-        /* Header de Contexto */
-        .page-header {
+        /* Topbar de Navegação */
+        .topbar {
+            background: rgba(7, 19, 48, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-tech);
+            padding: 15px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 32px;
-            border-bottom: 1px solid var(--border-tech);
-            padding-bottom: 20px;
-            gap: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        .page-header h1 { font-size: 1.6rem; color: var(--text-title); font-weight: 700; }
+        .brand-block { display: flex; align-items: center; gap: 10px; }
+        .brand-title { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.5px; }
+        .brand-title span { color: var(--tech-blue); }
+        
+        .nav-actions { display: flex; align-items: center; gap: 15px; }
+        .btn-link {
+            color: var(--text-body); text-decoration: none; font-size: 0.9rem;
+            transition: color 0.2s; display: flex; align-items: center; gap: 6px;
+        }
+        .btn-link:hover { color: var(--tech-blue); }
 
-        .header-actions {
+        /* Layout em Colunas (Estilo Rede Social) */
+        .workspace-container {
+            max-width: 1300px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+        }
+
+        /* Coluna Lateral Esquerda: Perfil e Atalhos */
+        .sidebar-profile {
             display: flex;
-            align-items: center;
-            gap: 16px;
+            flex-direction: column;
+            gap: 20px;
         }
-
-        /* Ícone Central de Notificações */
-        .notification-bell {
-            position: relative;
+        .profile-card {
             background: var(--bg-card);
             border: 1px solid var(--border-tech);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+        .avatar-mimic {
+            width: 70px; height: 70px; background: linear-gradient(135deg, var(--tech-blue), var(--tech-purple));
+            border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; color: var(--bg-main); font-weight: bold;
+        }
+        .profile-card h3 { font-size: 1.1rem; margin-bottom: 4px; }
+        .profile-card p { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+
+        .system-menu {
+            background: var(--bg-card);
+            border: 1px solid var(--border-tech);
+            border-radius: 16px;
+            padding: 12px;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-title);
-            cursor: pointer;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .menu-item {
+            display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+            color: var(--text-body); text-decoration: none; border-radius: 10px; font-size: 0.9rem;
             transition: all 0.2s;
         }
-        .notification-bell:hover {
-            border-color: var(--tech-blue);
+        .menu-item:hover, .menu-item.active {
+            background: var(--bg-input); color: var(--text-title);
         }
-        .notification-badge {
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            background: var(--tech-red);
-            color: white;
-            font-size: 0.7rem;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
+        .menu-item i { font-size: 1.1rem; width: 24px; text-align: center; }
+        .menu-item.active i { color: var(--tech-blue); }
 
-        .user-pill {
-            background: var(--bg-card);
-            border: 1px solid var(--border-tech);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.82rem;
-            color: var(--text-title);
+        /* Coluna Direita: Publisher e Timeline */
+        .feed-area {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            white-space: nowrap;
-        }
-        .user-pill .dot { width: 8px; height: 8px; background: var(--tech-green); border-radius: 50%; }
-
-        /* Painéis Operacionais */
-        .tech-panel { display: none; }
-        .tech-panel.active { display: block; }
-
-        .grid-two-cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            flex-direction: column;
             gap: 24px;
         }
 
-        .tech-card {
+        /* O Publicador (Central de Postagem / Facebook Style) */
+        .publisher-card {
             background: var(--bg-card);
             border: 1px solid var(--border-tech);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
         }
-
-        .tech-card h3 {
-            font-size: 1.1rem;
-            color: var(--text-title);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .publisher-header {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
         }
-
-        /* Formulários Técnicos */
-        .tech-form-group { margin-bottom: 16px; }
-        .tech-form-group label {
-            display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-title);
-            margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.02em;
-        }
-        .tech-form-group input, .tech-form-group select, .tech-form-group textarea {
+        .publisher-header h2 { font-size: 1.1rem; font-weight: 600; }
+        
+        .input-group { margin-bottom: 12px; }
+        .tech-input {
             width: 100%; background: var(--bg-input); border: 1px solid var(--border-tech);
-            border-radius: 6px; padding: 12px; color: var(--text-title); font-size: 0.9rem; outline: none;
+            border-radius: 8px; padding: 12px 16px; color: var(--text-title);
+            font-family: inherit; font-size: 0.9rem; outline: none; transition: all 0.2s;
         }
-        .tech-form-group input:focus, .tech-form-group select:focus, .tech-form-group textarea:focus {
-            border-color: var(--tech-blue); box-shadow: 0 0 8px var(--border-glow);
-        }
+        .tech-input:focus { border-color: var(--tech-blue); box-shadow: 0 0 0 3px var(--border-glow); }
+        
+        textarea.tech-input { min-height: 100px; resize: vertical; }
 
-        .btn-tech-primary {
-            background: var(--tech-blue); color: var(--bg-main); border: none;
-            padding: 12px 20px; border-radius: 6px; font-weight: 700; font-size: 0.88rem;
-            cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background 0.2s;
-        }
-        .btn-tech-primary:hover { background: #56cbfb; }
-
-        /* ESTRUTURA DO AMBIENTE DE CHAT E GRUPOS (NÚCLEOS) */
-        .workspace-comms {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            background: var(--bg-card);
-            border: 1px solid var(--border-tech);
-            border-radius: 12px;
-            overflow: hidden;
-            height: 600px;
-        }
-
-        /* Lista de Canais/Perfis esquerda */
-        .comms-sidebar {
-            background: rgba(0, 0, 0, 0.15);
-            border-right: 1px solid var(--border-tech);
+        /* Barra de Ferramentas de Anexo (Qlik, Imagens, Arquivos) */
+        .attachment-bar {
+            border-top: 1px solid var(--border-tech);
+            padding-top: 16px;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
         }
-        .comms-section-title {
-            font-size: 0.7rem; text-transform: uppercase; font-weight: 700;
-            color: var(--text-muted); padding: 16px 16px 8px 16px; letter-spacing: 0.05em;
-        }
-        .channel-item {
-            display: flex; align-items: center; gap: 12px; padding: 12px 16px;
-            cursor: pointer; color: var(--text-body); font-size: 0.88rem; transition: all 0.2s;
-        }
-        .channel-item:hover { background: rgba(255,255,255,0.03); }
-        .channel-item.active { background: rgba(56, 189, 248, 0.1); color: var(--tech-blue); font-weight: 600; }
-        .channel-avatar {
-            width: 32px; height: 32px; border-radius: 50%; background: var(--bg-input);
-            display: flex; align-items: center; justify-content: center; position: relative;
-        }
-        .channel-avatar .status-dot {
-            width: 8px; height: 8px; border-radius: 50%; position: absolute; bottom: 0; right: 0;
-            border: 2px solid var(--bg-card);
-        }
-
-        /* Caixa de Chat Direta */
-        .chat-box {
-            display: flex; flex-direction: column; height: 100%;
-        }
-        .chat-header {
-            padding: 16px; border-bottom: 1px solid var(--border-tech);
-            display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.05);
-        }
-        .chat-messages {
-            flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
-        }
-        .msg-row { display: flex; flex-direction: column; max-width: 75%; }
-        .msg-row.sent { align-self: flex-end; align-items: flex-end; }
-        .msg-row.received { align-self: flex-start; align-items: flex-start; }
+        .media-triggers { display: flex; gap: 8px; }
         
-        .msg-content {
-            padding: 10px 14px; border-radius: 8px; font-size: 0.88rem; line-height: 1.4;
-        }
-        .sent .msg-content { background: var(--tech-blue); color: var(--bg-main); border-bottom-right-radius: 0; }
-        .received .msg-content { background: var(--bg-input); color: var(--text-title); border-bottom-left-radius: 0; }
-        .msg-meta { font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; }
-
-        .chat-footer {
-            padding: 16px; border-top: 1px solid var(--border-tech); background: rgba(0,0,0,0.1);
-        }
-        .chat-input-wrapper { display: flex; gap: 10px; }
-        .chat-input-wrapper input {
-            flex: 1; background: var(--bg-input); border: 1px solid var(--border-tech);
-            border-radius: 6px; padding: 12px; color: white; outline: none;
-        }
-
-        /* GESTÃO DE GRUPOS DE TRABALHO E TAREFAS */
-        .group-workspace {
-            display: grid; grid-template-columns: 1fr 320px; height: 100%;
-        }
-        .tasks-panel {
-            border-left: 1px solid var(--border-tech); background: rgba(0,0,0,0.08);
-            display: flex; flex-direction: column; padding: 16px;
-        }
-        .tasks-panel h4 { font-size: 0.9rem; color: var(--text-title); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;}
-        .task-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-        
-        .task-item {
+        /* Botões de Anexo Alternáveis */
+        .btn-attach {
             background: var(--bg-input); border: 1px solid var(--border-tech);
-            border-radius: 6px; padding: 12px; font-size: 0.82rem; transition: border-color 0.2s;
+            color: var(--text-body); padding: 8px 14px; border-radius: 8px;
+            font-size: 0.8rem; font-weight: 600; cursor: pointer; display: inline-flex;
+            align-items: center; gap: 8px; transition: all 0.2s;
         }
-        .task-item.done { border-left: 3px solid var(--tech-green); opacity: 0.8; }
-        .task-item.pending { border-left: 3px solid var(--tech-orange); }
+        .btn-attach:hover { background: rgba(255,255,255,0.05); color: var(--text-title); }
+        .btn-attach i { font-size: 0.95rem; }
+        .btn-attach.active { border-color: var(--tech-blue); background: rgba(56, 189, 248, 0.1); color: var(--tech-blue); }
+
+        .btn-publish {
+            background: var(--tech-blue); color: var(--bg-main); border: none;
+            padding: 10px 24px; border-radius: 8px; font-weight: 700; font-size: 0.88rem;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s;
+        }
+        .btn-publish:hover { opacity: 0.9; }
+
+        /* Gavetas Expandíveis para Configuração de Mídia e Qlik */
+        .drawer-attachment {
+            background: rgba(13, 31, 74, 0.4);
+            border: 1px dashed var(--border-tech);
+            border-radius: 8px; padding: 14px; margin-bottom: 12px;
+            display: none; /* Inicia oculto, JS abrirá */
+        }
+        .drawer-attachment.open { display: block; }
+        .drawer-title { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--tech-blue); margin-bottom: 8px; }
+
+        /* Lista de Arquivos Prontos para Upload (Simulação) */
+        .upload-preview-list {
+            display: flex; flex-direction: column; gap: 6px; margin-top: 8px;
+        }
+        .preview-item {
+            background: var(--bg-input); padding: 6px 12px; border-radius: 4px;
+            font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center;
+        }
+        .preview-item i { color: var(--tech-green); }
+
+        /* Linha do Tempo (Feed de Pré-visualização do que está publicado) */
+        .feed-timeline-title {
+            font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.5px;
+            color: var(--text-muted); margin-top: 10px; display: flex; align-items: center; gap: 10px;
+        }
+        .feed-timeline-title::after { content:''; flex: 1; height: 1px; background: var(--border-tech); }
+
+        /* Cards de Postagem na Timeline */
+        .post-card {
+            background: var(--bg-card); border: 1px solid var(--border-tech); border-radius: 16px; padding: 24px;
+        }
+        .post-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .post-author { display: flex; align-items: center; gap: 10px; }
+        .post-author-avatar { width: 36px; height: 36px; background: #162c5b; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: bold; color: var(--tech-blue); }
+        .post-author-info h4 { font-size: 0.9rem; color: var(--text-title); }
+        .post-author-info span { font-size: 0.75rem; color: var(--text-muted); }
         
-        .task-header-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-weight: 600; }
-        .task-badge-status { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; text-transform: uppercase;}
-        .task-badge-status.p-done { background: rgba(16,185,129,0.2); color: var(--tech-green); }
-        .task-badge-status.p-pending { background: rgba(245,158,11,0.2); color: var(--tech-orange); }
-        
-        .task-actions { display: flex; justify-content: flex-end; margin-top: 8px; }
-        .btn-task-complete {
-            background: var(--tech-green); color: var(--bg-main); border: none;
-            padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; cursor: pointer;
+        .post-badge { background: rgba(52, 211, 153, 0.1); color: var(--tech-green); font-size: 0.7rem; font-weight: 700; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; }
+
+        .post-content h3 { font-size: 1.15rem; margin-bottom: 10px; color: var(--text-title); }
+        .post-content p { font-size: 0.92rem; line-height: 1.5; color: var(--text-body); margin-bottom: 16px; }
+
+        /* Simulação do Container do Qlik Sense */
+        .qlik-embed-placeholder {
+            background: #020613; border: 1px solid rgba(192, 132, 252, 0.2); border-radius: 10px;
+            padding: 20px; text-align: center; margin-top: 14px; position: relative; overflow: hidden;
+            min-height: 200px; display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
+        .qlik-embed-placeholder i { font-size: 2rem; color: var(--tech-purple); margin-bottom: 10px; }
+        .qlik-badge { position: absolute; top: 10px; right: 10px; font-size: 0.65rem; background: var(--tech-purple); color: #000; font-weight: bold; padding: 2px 6px; border-radius: 3px; }
 
-        /* TOAST NOTIFICATION SYSTEM */
-        .toast-container {
-            position: fixed; bottom: 20px; right: 20px; z-index: 9999;
-            display: flex; flex-direction: column; gap: 10px;
+        /* Arquivos Anexados no Post */
+        .post-attachments-grid {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px;
         }
-        .toast-alert {
-            background: #1e293b; border-left: 4px solid var(--tech-green); color: white;
-            padding: 16px; border-radius: 6px; font-size: 0.85rem; width: 320px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; gap: 12px;
-            align-items: flex-start; animation: slideIn 0.3s ease;
+        .file-chip {
+            background: var(--bg-input); border: 1px solid var(--border-tech); padding: 8px 12px;
+            border-radius: 6px; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; color: var(--text-title);
         }
-        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .file-chip i { color: var(--tech-blue); }
 
-        /* Tabelas */
-        .tech-table-wrapper { width: 100%; overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-tech); background: var(--bg-card); }
-        .tech-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; min-width: 700px; }
-        .tech-table th { background: var(--bg-input); color: var(--text-title); padding: 14px 12px; font-weight: 600; border-bottom: 2px solid var(--border-tech); }
-        .tech-table td { padding: 14px 12px; border-bottom: 1px solid var(--border-tech); }
-        .status-badge { font-size: 0.72rem; font-weight: 700; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; white-space: nowrap; }
-        .status-pending { background: rgba(245, 158, 11, 0.15); color: var(--tech-orange); }
-        .status-approved { background: rgba(16, 185, 129, 0.15); color: var(--tech-green); }
-
-        .actions-cell { display: flex; gap: 8px; }
-        .action-icon-btn {
-            background: var(--bg-input); border: 1px solid var(--border-tech); color: var(--text-title);
-            width: 32px; height: 32px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center;
-        }
-
-        .sidebar-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 998; }
-
-        @media (max-width: 992px) {
-            .mobile-toggle { display: flex; }
-            aside { transform: translateX(-100%); }
-            aside.open { transform: translateX(0); }
-            .sidebar-overlay.open { display: block; }
-            main { margin-left: 0; width: 100%; padding: 80px 16px 40px 16px; }
-            .grid-two-cols { grid-template-columns: 1fr; gap: 16px; }
-            .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-            .header-actions { width: 100%; justify-content: space-between; }
-            .workspace-comms { grid-template-columns: 1fr; height: auto; }
-            .group-workspace { grid-template-columns: 1fr; }
-            .comms-sidebar { height: 200px; overflow-y: auto; }
-            .tasks-panel { border-left: none; border-top: 1px solid var(--border-tech); }
+        @media (max-width: 900px) {
+            .workspace-container { grid-template-columns: 1fr; }
+            .sidebar-profile { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <button class="mobile-toggle" id="menuToggle" aria-label="Abrir Menu">
-        <i class="fa-solid fa-bars"></i>
-    </button>
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <div class="toast-container" id="toastContainer"></div>
-
-    <aside id="sidebar">
-        <div class="sidebar-brand">
-            <i class="fa-solid fa-square-poll-vertical"></i> Control Center DMA
+    <header class="topbar">
+        <div class="brand-block">
+            <div class="brand-title">Portal DMA // <span>Área Técnica</span></div>
         </div>
+        <div class="nav-actions">
+            <a href="./index.html" class="btn-link"><i class="fa-solid fa-globe"></i> Ver Área Pública</a>
+            <a href="./painel-gestao.html" class="btn-link" style="color: var(--tech-purple);"><i class="fa-solid fa-user-tie"></i> Painel do Diretor</a>
+        </div>
+    </header>
+
+    <main class="workspace-container">
         
-        <div class="menu-label">Gestão de Feed</div>
-        <button class="sidebar-btn active" onclick="switchPanel('feed-post')">
-            <i class="fa-solid fa-pen-to-square"></i> Nova Postagem
-        </button>
-
-        <div class="menu-label">Acessos e Controles</div>
-        <button class="sidebar-btn" onclick="switchPanel('logins-admin')">
-            <i class="fa-solid fa-users-gear"></i> Administrar Logins
-        </button>
-
-        <div class="menu-label">Interdepartamental</div>
-        <button class="sidebar-btn" onclick="switchPanel('nucleos-comms')">
-            <i class="fa-solid fa-comments-satellite"></i> Comunicações & Tarefas
-        </button>
-
-        <div class="menu-label" style="margin-top: auto; padding-top: 20px;">Sessão Técnica</div>
-        <a href="./feed.html" class="sidebar-btn" style="text-decoration: none; color: var(--tech-red);">
-            <i class="fa-solid fa-power-off"></i> Sair da Área Técnica
-        </a>
-    </aside>
-
-    <main>
-        <div class="page-header">
-            <div>
-                <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--tech-blue);">Ambiente de Gerenciamento Restrito</span>
-                <h1 id="panelTitle">Gerenciador de Postagens Corporativas</h1>
+        <section class="sidebar-profile">
+            <div class="profile-card">
+                <div class="avatar-mimic">DT</div>
+                <h3>Depto Técnico</h3>
+                <p>Operador Nível 2</p>
             </div>
-            <div class="header-actions">
-                <div class="notification-bell" onclick="alert('Histórico de Alertas de Conclusão de Tarefas verificado.')">
-                    <i class="fa-solid fa-bell"></i>
-                    <span class="notification-badge" id="bellBadge">2</span>
-                </div>
-                <div class="user-pill">
-                    <div class="dot"></div>
-                    <span>Técnico DMA: <strong>Luisa (Eng. Agrimensura)</strong></span>
-                </div>
-            </div>
-        </div>
-
-        <section id="panel-feed-post" class="tech-panel active">
-            <div class="grid-two-cols">
-                <div class="tech-card">
-                    <h3><i class="fa-solid fa-bullhorn" style="color: var(--tech-blue);"></i> Publicar Informação no Explorar</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">O conteúdo postado ficará visível imediatamente na página pública.</p>
-                    <form onsubmit="simulatePost(event)">
-                        <div class="tech-form-group">
-                            <label>Atividade / Núcleo Regulatório</label>
-                            <select id="postCategory" required>
-                                <option value="aedes">Módulo Aedes</option>
-                                <option value="recicla">CEDAE Recicla</option>
-                                <option value="geo">Geoprocessamento</option>
-                            </select>
-                        </div>
-                        <div class="tech-form-group">
-                            <label>Assunto da Publicação</label>
-                            <input type="text" id="postSubject" placeholder="Ex: Emissão de Certificados" required>
-                        </div>
-                        <div class="tech-form-group">
-                            <label>Mensagem / Conteúdo Escrito</label>
-                            <textarea id="postBody" rows="5" placeholder="Descreva os prazos..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn-tech-primary"><i class="fa-solid fa-paper-plane"></i> Despachar</button>
-                    </form>
-                </div>
-
-                <div class="tech-card">
-                    <h3><i class="fa-solid fa-clock-rotate-left"></i> Histórico Recente de Disparos</h3>
-                    <div class="comms-history">
-                        <div class="comm-bubble">
-                            <div class="comm-bubble-meta"><span>Geoprocessamento</span><span>Há 2d</span></div>
-                            <strong>Atualização de Camadas Espaciais: Canal Imunana (2026)</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
+            <nav class="system-menu">
+                <a href="#" class="menu-item active"><i class="fa-solid fa-signs-post"></i> Publicador do Feed</a>
+                <a href="./aedes-tecnico.html" class="menu-item"><i class="fa-solid fa-mosquito"></i> Programa Aedes (Focais)</a>
+                <a href="#" class="menu-item" onclick="alert('Módulo em desenvolvimento...')"><i class="fa-solid fa-recycle"></i> CEDAE Recicla</a>
+            </nav>
         </section>
 
-        <section id="panel-logins-admin" class="tech-panel">
-            <div class="tech-card">
-                <h3><i class="fa-solid fa-user-shield" style="color: var(--tech-orange);"></i> Triagem de Credenciais</h3>
-                <div class="tech-table-wrapper">
-                    <table class="tech-table">
-                        <thead>
-                            <tr>
-                                <th>Funcionário</th>
-                                <th>Unidade</th>
-                                <th>Cargo Declarado</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Carlos Roberto</strong></td>
-                                <td>ETA Guandu</td>
-                                <td>Supervisor de Operações</td>
-                                <td><span class="status-badge status-pending">Aguardando</span></td>
-                                <td class="actions-cell">
-                                    <button class="action-icon-btn" style="color:var(--tech-green)" onclick="alert('Homologado!')"><i class="fa-solid fa-check"></i></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <section class="feed-area">
+            
+            <article class="publisher-card">
+                <div class="publisher-header">
+                    <i class="fa-solid fa-pen-to-square" style="color: var(--tech-blue); font-size: 1.2rem;"></i>
+                    <h2>Nova Publicação para o Portal Público</h2>
                 </div>
-            </div>
-        </section>
 
-        <section id="panel-nucleos-comms" class="tech-panel">
-            <div class="workspace-comms">
-                
-                <div class="comms-sidebar">
-                    <div class="comms-section-title">Canais Diretos (Perfis)</div>
-                    <div class="channel-item active" onclick="switchChannel('carlos', this)">
-                        <div class="channel-avatar">
-                            <i class="fa-solid fa-user text-muted"></i>
-                            <div class="status-dot" style="background-color: var(--tech-green)"></div>
+                <div class="input-group">
+                    <input type="text" id="postSubject" class="tech-input" placeholder="Assunto ou Título do Despacho Ambiental...">
+                </div>
+                <div class="input-group">
+                    <textarea id="postBody" class="tech-input" placeholder="Escreva aqui o relatório, nota técnica ou atualização de campo para a população..."></textarea>
+                </div>
+
+                <div class="drawer-attachment" id="drawerQlik">
+                    <div class="drawer-title"><i class="fa-solid fa-chart-line"></i> Incorporar Objeto / Painel Qlik</div>
+                    <input type="text" id="qlikUrlInput" class="tech-input" placeholder="Cole o App ID ou a URL de Integração Single/Iframe do Qlik Sense...">
+                    <p style="font-size:0.7rem; color: var(--text-muted); margin-top: 4px;">O sistema renderizará o gráfico dinâmico diretamente na timeline pública.</p>
+                </div>
+
+                <div class="drawer-attachment" id="drawerFiles">
+                    <div class="drawer-title"><i class="fa-solid fa-paperclip"></i> Anexar Mídias e Arquivos Oficiais</div>
+                    <input type="file" id="nativeFileInput" multiple style="display: none;" onchange="handleFileSelectionSimulated()">
+                    <button class="btn-attach" onclick="document.getElementById('nativeFileInput').click()">
+                        <i class="fa-solid fa-folder-open"></i> Selecionar do Computador
+                    </button>
+                    
+                    <div class="upload-preview-list" id="uploadPreviewContainer">
                         </div>
-                        <div>
-                            <div>Carlos Roberto</div>
-                            <div style="font-size:0.7rem; color:var(--text-muted)">ETA Guandu</div>
-                        </div>
+                </div>
+
+                <div class="attachment-bar">
+                    <div class="media-triggers">
+                        <button class="btn-attach" id="toggleQlikBtn" onclick="toggleDrawer('drawerQlik', this)">
+                            <i class="fa-solid fa-chart-pie" style="color: var(--tech-purple);"></i> Incluir Qlik
+                        </button>
+                        <button class="btn-attach" id="toggleFilesBtn" onclick="toggleDrawer('drawerFiles', this)">
+                            <i class="fa-solid fa-image" style="color: var(--tech-green);"></i> Fotos / Arquivos
+                        </button>
                     </div>
                     
-                    <div class="channel-item" onclick="switchChannel('marcos', this)">
-                        <div class="channel-avatar">
-                            <i class="fa-solid fa-user text-muted"></i>
-                            <div class="status-dot" style="background-color: var(--text-muted)"></div>
-                        </div>
-                        <div>
-                            <div>Marcos Souza</div>
-                            <div style="font-size:0.7rem; color:var(--text-muted)">Subest. Tinguá</div>
-                        </div>
-                    </div>
-
-                    <div class="comms-section-title">Grupos de Trabalho</div>
-                    <div class="channel-item" onclick="switchChannel('grupo-aedes', this)">
-                        <div class="channel-avatar" style="background: rgba(56,189,248,0.2)">
-                            <i class="fa-solid fa-users" style="color:var(--tech-blue)"></i>
-                        </div>
-                        <div>
-                            <div>GT - Combate Aedes</div>
-                            <div style="font-size:0.7rem; color:var(--tech-blue)">3 integrantes</div>
-                        </div>
-                    </div>
+                    <button class="btn-publish" onclick="executePublishSimulated()">
+                        <i class="fa-solid fa-paper-plane"></i> Publicar no Feed
+                    </button>
                 </div>
+            </article>
 
-                <div class="chat-box" id="chatBoxContainer">
+            <div class="feed-timeline-title">Publicações Ativas no Feed</div>
+
+            <div class="post-card">
+                <div class="post-meta">
+                    <div class="post-author">
+                        <div class="post-author-avatar">DT</div>
+                        <div class="post-author-info">
+                            <h4>Equipe Técnica DMA</h4>
+                            <span>Há 2 horas • Público</span>
+                        </div>
+                    </div>
+                    <span class="post-badge">Atualizado</span>
+                </div>
+                <div class="post-content">
+                    <h3>Monitoramento Volumétrico - ETA Guandu</h3>
+                    <p>Compartilhamos o painel dinâmico atualizado com o índice de vazão e tratamento de resíduos decantados. Os dados são atualizados de forma síncrona a cada ciclo operacional.</p>
                     
-                    <div class="chat-header">
-                        <div>
-                            <h4 id="activeChatTitle">Canal de Comunicação: Carlos Roberto</h4>
-                            <p id="activeChatSubtitle" style="font-size: 0.75rem; color: var(--text-muted);">Status: Conectado à sala direta</p>
-                        </div>
-                        <span class="status-badge status-approved" id="chatHeaderBadge">Focal Técnico</span>
+                    <div class="qlik-embed-placeholder">
+                        <span class="qlik-badge">QLIK SENSE LIVE</span>
+                        <i class="fa-solid fa-chart-gantt"></i>
+                        <strong style="color: var(--text-title); font-size: 0.9rem;">Painel de Macro-Indicadores de Saneamento</strong>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); margin-top:4px;">App ID: guandu-volumetric-2026-v1</span>
                     </div>
-
-                    <div style="display: flex; flex: 1; min-height: 0;" id="chatBodyWrapper">
-                        
-                        <div class="chat-messages" id="chatMessagesWindow">
-                            <div class="msg-row received">
-                                <div class="msg-content">Olá Luisa, terminou a consolidação dos dados de vistorias da ETA Guandu desta semana?</div>
-                                <div class="msg-meta">Carlos Roberto • Ontem às 16:40</div>
-                            </div>
-                            <div class="msg-row sent">
-                                <div class="msg-content">Boas Carlos, sim! Já despachei para a fila de exibição pública. Qualquer dúvida avisa.</div>
-                                <div class="msg-meta">Luisa • Ontem às 17:02</div>
-                            </div>
-                        </div>
-
-                        <div class="tasks-panel" id="groupTasksPanel" style="display: none;">
-                            <h4><i class="fa-solid fa-list-check" style="color:var(--tech-orange)"></i> Tarefas Atribuídas</h4>
-                            <div class="task-list" id="taskListContainer">
-                                </div>
-                            
-                            <div style="margin-top: 12px; padding-top:12px; border-top:1px solid var(--border-tech)">
-                                <input type="text" id="newTaskInput" placeholder="Nova tarefa..." style="width:100%; padding:8px; background:var(--bg-main); border:1px solid var(--border-tech); color:white; border-radius:4px; font-size:0.75rem; margin-bottom:6px; outline:none;">
-                                <button type="button" class="btn-tech-primary" style="width:100%; padding:6px; font-size:0.75rem; justify-content:center;" onclick="addNewGroupTask()">Atribuir ao Grupo</button>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="chat-footer">
-                        <form onsubmit="sendMessage(event)" class="chat-input-wrapper">
-                            <input type="text" id="chatMessageField" placeholder="Escreva a sua mensagem ou instrução técnica para o canal..." autocomplete="off">
-                            <button type="submit" class="btn-tech-primary"><i class="fa-solid fa-paper-plane"></i></button>
-                        </form>
-                    </div>
-
                 </div>
-
             </div>
+
+            <div class="post-card">
+                <div class="post-meta">
+                    <div class="post-author">
+                        <div class="post-author-avatar">DT</div>
+                        <div class="post-author-info">
+                            <h4>Equipe Técnica DMA</h4>
+                            <span>Ontem • Público</span>
+                        </div>
+                    </div>
+                    <span class="post-badge">Arquivo</span>
+                </div>
+                <div class="post-content">
+                    <h3>Relatório Técnico Semanal - Combate ao Aedes</h3>
+                    <p>Consolidado das vistorias prediais executadas pelos focais em campo nas subestações e blocos centrais durante a última rodada epidemiológica.</p>
+                    
+                    <div class="post-attachments-grid">
+                        <div class="file-chip"><i class="fa-solid fa-file-pdf"></i> relatorio_semanal_consolidado.pdf</div>
+                        <div class="file-chip"><i class="fa-solid fa-image"></i> mapeamento_focos_blocoB.png</div>
+                    </div>
+                </div>
+            </div>
+
         </section>
     </main>
 
     <script>
-        // Gestão Responsiva do Menu Mobile
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-        function toggleMobileMenu() {
-            sidebar.classList.toggle('open');
-            sidebarOverlay.classList.toggle('open');
-            const icon = menuToggle.querySelector('i');
-            icon.className = sidebar.classList.contains('open') ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
-        }
-        menuToggle.addEventListener('click', toggleMobileMenu);
-        sidebarOverlay.addEventListener('click', toggleMobileMenu);
-
-        function switchPanel(panelId) {
-            document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tech-panel').forEach(panel => panel.classList.remove('active'));
-            document.getElementById('panel-' + panelId).classList.add('active');
-            if(event && event.currentTarget) event.currentTarget.classList.add('active');
-
-            const titleMap = {
-                'feed-post': 'Gerenciador de Postagens Corporativas',
-                'logins-admin': 'Administração e Homologação de Logins',
-                'nucleos-comms': 'Módulo de Comunicações & Grupos de Trabalho'
-            };
-            document.getElementById('panelTitle').textContent = titleMap[panelId];
-            if(window.innerWidth <= 992) toggleMobileMenu();
+        // Função simples para alternar a exibição das gavetas de anexo (Qlik ou Arquivos)
+        function toggleDrawer(drawerId, buttonElement) {
+            const drawer = document.getElementById(drawerId);
+            drawer.classList.toggle('open');
+            buttonElement.classList.toggle('active');
         }
 
-        /* BANCO DE DADOS LOCAL SIMULADO (CHAT & TAREFAS) */
-        let currentChannel = 'carlos';
-        let notificationsCount = 2;
-
-        const chatDatabase = {
-            carlos: {
-                title: "Canal de Comunicação: Carlos Roberto",
-                subtitle: "Status: Conectado à sala direta",
-                badge: "Focal Técnico",
-                isGroup: false,
-                messages: [
-                    { sender: "Carlos Roberto", text: "Olá Luisa, terminou a consolidação dos dados de vistorias da ETA Guandu desta semana?", time: "Ontem às 16:40", isSent: false },
-                    { sender: "Luisa", text: "Boas Carlos, sim! Já despachei para a fila de exibição pública. Qualquer dúvida avisa.", time: "Ontem às 17:02", isSent: true }
-                ]
-            },
-            marcos: {
-                title: "Canal de Comunicação: Marcos Souza",
-                subtitle: "Status: Offline (Visto por último há 1h)",
-                badge: "Focal Técnico",
-                isGroup: false,
-                messages: [
-                    { sender: "Marcos Souza", text: "Luisa, o relatório técnico do Saneamento de Tinguá foi anexado no sistema.", time: "Hoje às 09:12", isSent: false }
-                ]
-            },
-            'grupo-aedes': {
-                title: "Grupo de Trabalho: GT - Combate Aedes",
-                subtitle: "Canal Interdepartamental Operacional",
-                badge: "Grupo de Trabalho",
-                isGroup: true,
-                messages: [
-                    { sender: "Sistema", text: "Grupo de trabalho iniciado para mapeamento do segundo trimestre.", time: "Há 3 dias", isSent: false },
-                    { sender: "Carlos Roberto", text: "Adicionei as metas de inspeção no painel de tarefas ao lado.", time: "Hoje às 10:00", isSent: false }
-                ],
-                tasks: [
-                    { id: 1, text: "Levantamento estatístico de focos residenciais", done: true, by: "Marcos Souza" },
-                    { id: 2, text: "Gerar relatório consolidado final do trimestre", done: false, by: "Luisa" }
-                ]
-            }
-        };
-
-        // Alternar entre Perfis e Grupos de Trabalho
-        function switchChannel(channelId, element) {
-            currentChannel = channelId;
-            document.querySelectorAll('.channel-item').forEach(item => item.classList.remove('active'));
-            element.classList.add('active');
-
-            const channelData = chatDatabase[channelId];
+        // Simulação visual de seleção de arquivos locais
+        function handleFileSelectionSimulated() {
+            const input = document.getElementById('nativeFileInput');
+            const container = document.getElementById('uploadPreviewContainer');
+            container.innerHTML = ''; // limpa antigos
             
-            // Atualizar cabeçalho do chat
-            document.getElementById('activeChatTitle').textContent = channelData.title;
-            document.getElementById('activeChatSubtitle').textContent = channelData.subtitle;
-            document.getElementById('chatHeaderBadge').textContent = channelData.badge;
-
-            // Mostrar/Ocultar painel de tarefas de grupo
-            const tasksPanel = document.getElementById('groupTasksPanel');
-            if (channelData.isGroup) {
-                tasksPanel.style.display = 'flex';
-                renderTasks();
-            } else {
-                tasksPanel.style.display = 'none';
-            }
-
-            renderMessages();
-        }
-
-        // Renderizar Mensagens na Janela
-        function renderMessages() {
-            const win = document.getElementById('chatMessagesWindow');
-            win.innerHTML = '';
-            
-            chatDatabase[currentChannel].messages.forEach(msg => {
-                const row = document.createElement('div');
-                row.className = `msg-row ${msg.isSent ? 'sent' : 'received'}`;
-                row.innerHTML = `
-                    <div class="msg-content">${msg.text}</div>
-                    <div class="msg-meta">${msg.sender} • ${msg.time}</div>
-                `;
-                win.appendChild(row);
-            });
-            win.scrollTop = win.scrollHeight;
-        }
-
-        // Renderizar Tarefas Atribuídas do Grupo
-        function renderTasks() {
-            const container = document.getElementById('taskListContainer');
-            container.innerHTML = '';
-            
-            const group = chatDatabase['grupo-aedes'];
-            group.tasks.forEach(task => {
-                const item = document.createElement('div');
-                item.className = `task-item ${task.done ? 'done' : 'pending'}`;
-                item.innerHTML = `
-                    <div class="task-header-row">
-                        <span>${task.text}</span>
-                        <span class="task-badge-status ${task.done ? 'p-done' : 'p-pending'}">${task.done ? 'Concluída' : 'Pendente'}</span>
-                    </div>
-                    <div style="font-size:0.7rem; color:var(--text-muted)">Responsável: <strong>${task.by}</strong></div>
-                    ${!task.done ? `<div class="task-actions"><button class="btn-task-complete" onclick="completeTask(${task.id})"><i class="fa-solid fa-check"></i> Marcar Pronto</button></div>` : ''}
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        // Enviar nova mensagem no chat
-        function sendMessage(event) {
-            event.preventDefault();
-            const input = document.getElementById('chatMessageField');
-            if (!input.value.trim()) return;
-
-            chatDatabase[currentChannel].messages.push({
-                sender: "Luisa",
-                text: input.value,
-                time: "Agora mesmo",
-                isSent: true
-            });
-
-            input.value = '';
-            renderMessages();
-        }
-
-        // Criar uma nova tarefa para o grupo
-        function addNewGroupTask() {
-            const input = document.getElementById('newTaskInput');
-            if (!input.value.trim()) return;
-
-            chatDatabase['grupo-aedes'].tasks.push({
-                id: Date.now(),
-                text: input.value,
-                done: false,
-                by: "Equipe"
-            });
-
-            input.value = '';
-            renderTasks();
-        }
-
-        // Marcar tarefa como Concluída + Sistema Notificador Solicitado
-        function completeTask(taskId) {
-            const task = chatDatabase['grupo-aedes'].tasks.find(t => t.id === taskId);
-            if (task) {
-                task.done = true;
-                renderTasks();
-
-                // Disparar Notificação Visual (Badge Superior e Alerta Temporizado)
-                notificationsCount++;
-                document.getElementById('bellBadge').textContent = notificationsCount;
-                showNotificationToast(task.text);
+            if(input.files.length > 0) {
+                for(let i=0; i<input.files.length; i++) {
+                    container.innerHTML += `
+                        <div class="preview-item">
+                            <span><i class="fa-solid fa-file-arrow-up"></i> ${input.files[i].name}</span>
+                            <span style="color: var(--text-muted); font-size:0.75rem;">Aguardando envio</span>
+                        </div>
+                    `;
+                }
             }
         }
 
-        // Criar aviso Toast dinâmico
-        function showNotificationToast(taskName) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = 'toast-alert';
-            toast.innerHTML = `
-                <i class="fa-solid fa-circle-check" style="color:var(--tech-green); font-size:1.2rem; margin-top:2px;"></i>
-                <div>
-                    <strong style="display:block; margin-bottom:2px; font-size:0.85rem;">Notificação: Tarefa Pronta!</strong>
-                    <span style="color:var(--text-body); font-size:0.78rem;">A tarefa "<em>${taskName}</em>" foi concluída e homologada por Luisa.</span>
-                </div>
-            `;
-            container.appendChild(toast);
-
-            // Desaparece automaticamente após 5 segundos
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(100%)';
-                toast.style.transition = 'all 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 5000);
-        }
-
-        // Funções padrão antigas mantidas para consistência
-        function simulatePost(event) {
-            event.preventDefault();
-            alert("Sucesso! Postagem processada.");
+        // Gatilho de publicação (Aviso estático antes de escrevermos o JS definitivo com JSON)
+        function executePublishSimulated() {
+            const assunto = document.getElementById('postSubject').value;
+            if(!assunto) {
+                alert("Por favor, preencha pelo menos o Assunto antes de publicar.");
+                return;
+            }
+            alert(`Sucesso! O sistema processou a publicação "${assunto}". Quando o JavaScript do banco de dados estiver conectado, este bloco se transformará em um pacote JSON imutável e será enviado diretamente para a página pública.`);
+            
+            // Limpa o formulário
             document.getElementById('postSubject').value = '';
             document.getElementById('postBody').value = '';
+            document.getElementById('qlikUrlInput').value = '';
+            document.getElementById('uploadPreviewContainer').innerHTML = '';
+            document.querySelectorAll('.drawer-attachment').forEach(d => d.classList.remove('open'));
+            document.querySelectorAll('.btn-attach').forEach(b => b.classList.remove('active'));
         }
     </script>
 </body>
